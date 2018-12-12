@@ -1,0 +1,21 @@
+// test
+
+const int ddd = 10;
+
+int print(int __efg_12){
+    if (__efg_12 == 12)
+        return __efg_12 + 3 - (ddd);
+    else if (__efg_12 <= 12)
+        return __efg_12 * 10 / (100 + 2);
+}
+
+/*
+    test
+    test23432
+*/
+
+int main(){
+    int abc = 12231232323;
+    printf("%d\n\t",print(abc));
+    return 0;
+}
