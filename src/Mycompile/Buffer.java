@@ -44,7 +44,11 @@ public class Buffer {
         return buffer[(buffer_pointer + n)%3].tag;
     }
 
-    public String get_buffer_vlaue(int n){
+    public int get_token_position(int n){
+        return buffer[(buffer_pointer + n)%3].lineNum;
+    }
+
+    public String get_buffer_value(int n){
         Token tok = buffer[(buffer_pointer + n)%3];
         if(tok.tag == Tag.ID){
             return ((Word)tok).lexemne;

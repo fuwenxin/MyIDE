@@ -1,9 +1,8 @@
 package Mycompile;
 import Lexer.*;
+import Table.InfoSym;
 import Table.Tab;
 import Table.Tag;
-
-import java.util.Hashtable;
 
 public class Compile{
     Buffer token_buf;
@@ -24,8 +23,8 @@ public class Compile{
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             const_description_proc();
         }
-        if ((token_buf.get_buffer_type(2) == Tag.ID && token_buf.get_buffer_vlaue(2).equals(";"))||
-                (token_buf.get_buffer_type(2) == Tag.ID && token_buf.get_buffer_vlaue(2).equals(","))){
+        if ((token_buf.get_buffer_type(2) == Tag.ID && token_buf.get_buffer_value(2).equals(";"))||
+                (token_buf.get_buffer_type(2) == Tag.ID && token_buf.get_buffer_value(2).equals(","))){
             var_description_proc();
         }
         while (token_buf.get_buffer_type(1) == Tag.ID){
@@ -53,7 +52,6 @@ public class Compile{
 
     // <常量声明子程序>::=  const＜常量定义＞;{ const＜常量定义＞;}
     void const_description_proc(){
-        //TODO - 处理常量声明子程序
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             token_buf.update_buffer();
         }
@@ -61,7 +59,7 @@ public class Compile{
             // TODO - EORROR 语法错误处理
         }
         const_define_proc();
-        if (token_buf.get_buffer_vlaue(0).equals(";")){
+        if (token_buf.get_buffer_value(0).equals(";")){
             token_buf.update_buffer();
         }
         else {
@@ -70,7 +68,7 @@ public class Compile{
         while (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             token_buf.update_buffer();
             const_define_proc();
-            if (token_buf.get_buffer_vlaue(0).equals(";")){
+            if (token_buf.get_buffer_value(0).equals(";")){
                 token_buf.update_buffer();
             }
             else {
@@ -81,28 +79,296 @@ public class Compile{
 
     // <变量声明子程序>::= ＜变量定义＞;{＜变量定义＞;}
     void var_description_proc(){
-        //TODO - 处理变量声明子程序
+        var_define_proc();
+        if (token_buf.get_buffer_value(0).equals(";")){
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        while (token_buf.get_buffer_value(2).equals(";") || token_buf.get_buffer_value(2).equals(",")){
+            var_define_proc();
+            if (token_buf.get_buffer_value(0).equals(";")){
+                token_buf.update_buffer();
+            }
+            else{
+                // TODO - ERROR 错误处理
+            }
+        }
     }
 
     // ＜变量定义＞  ::= ＜类型标识符＞＜标识符＞{,＜标识符＞}
     void var_define_proc(){
-        // TODO - 变量定义
-    }
-
-    // ＜常量定义＞   ::=   int＜标识符＞＝＜整数＞{,＜标识符＞＝＜整数＞}
-    //						| float＜标识符＞＝＜实数＞{,＜标识符＞＝＜实数＞}
-    //						| char＜标识符＞＝＜字符＞{,＜标识符＞＝＜字符＞}
-    void const_define_proc(){
-        // TODO - 常量定义
-
+        int symKind = SymbolType.VAR;
+        int symType = -1;
+        int symLine = -1;
+        String symName = "";
+        String symValue = "0";
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
+            symType = Tag.NUM;
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_type(0) == Tag.FLOATSYM){
+            symType = Tag.FLOATNUM;
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_type(0) == Tag.CHARSYM){
+            symType = Tag.CHAR;
             token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        if (token_buf.get_buffer_type(0) == Tag.ID){
+            symName = token_buf.get_buffer_value(0);
+            symLine = token_buf.get_token_position(0);
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        if (symLine != -1)
+            symbolTablel.put(symName,new InfoSym(symLine,symKind,symType,symValue));
+        while (token_buf.get_buffer_value(0).equals(",")){
+            symLine = -1;
+            symName = "";
+            token_buf.update_buffer();
+            if (token_buf.get_buffer_type(0) == Tag.ID){
+                symName = token_buf.get_buffer_value(0);
+                symLine = token_buf.get_token_position(0);
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (symLine != -1)
+                symbolTablel.put(symName,new InfoSym(symLine,symKind,symType,symValue));
+        }
+    }
+
+    // ＜常量定义＞   ::=   int＜标识符＞＝[+|-]＜整数＞{,＜标识符＞＝[+|-]＜整数＞}
+    //						| float＜标识符＞＝[+|-]＜实数＞{,＜标识符＞＝[+|-]＜实数＞}
+    //						| char＜标识符＞＝＜字符＞{,＜标识符＞＝＜字符＞}
+    void const_define_proc(){
+        int symType ;
+        int symKind = SymbolType.CONSTVAR;
+        int curLine = -1;
+        String symValue = "";
+        String symName = "";
+        boolean isNegative = false;
+        if (token_buf.get_buffer_type(0) == Tag.INTSYM){
+            token_buf.update_buffer();
+            symType = Tag.NUM;
+            if (token_buf.get_buffer_type(0) == Tag.ID){
+                symName = token_buf.get_buffer_value(0);
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_value(0).equals("=")){
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_value(0).equals("+")){
+                token_buf.update_buffer();
+            }
+            else if (token_buf.get_buffer_value(0).equals("-")){
+                isNegative = true;
+                token_buf.update_buffer();
+            }
+            if (token_buf.get_buffer_type(0) == Tag.NUM){
+                symValue = token_buf.get_buffer_value(0);
+                curLine = token_buf.get_token_position(0);
+                if (isNegative){
+                    symValue = "-" + symValue;
+                }
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if( curLine != -1)
+                symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            while (token_buf.get_buffer_value(0).equals(",")){
+                curLine = -1;
+                symValue = "";
+                symName = "";
+                isNegative = false;
+                token_buf.update_buffer();
+                symType = Tag.NUM;
+                if (token_buf.get_buffer_type(0) == Tag.ID){
+                    symName = token_buf.get_buffer_value(0);
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_value(0).equals("=")){
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_value(0).equals("+")){
+                    token_buf.update_buffer();
+                }
+                else if (token_buf.get_buffer_value(0).equals("-")){
+                    isNegative = true;
+                    token_buf.update_buffer();
+                }
+                if (token_buf.get_buffer_type(0) == Tag.NUM){
+                    symValue = token_buf.get_buffer_value(0);
+                    curLine = token_buf.get_token_position(0);
+                    if (isNegative){
+                        symValue = "-" + symValue;
+                    }
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if( curLine != -1)
+                    symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            }
+        }
+        else if (token_buf.get_buffer_type(0) == Tag.FLOATSYM){
+            token_buf.update_buffer();
+            symType = Tag.FLOATNUM;
+            if (token_buf.get_buffer_type(0) == Tag.ID){
+                symName = token_buf.get_buffer_value(0);
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_value(0).equals("=")){
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_value(0).equals("+")){
+                token_buf.update_buffer();
+            }
+            else if (token_buf.get_buffer_value(0).equals("-")){
+                isNegative = true;
+                token_buf.update_buffer();
+            }
+            if (token_buf.get_buffer_value(0).equals("+")){
+                token_buf.update_buffer();
+            }
+            if (token_buf.get_buffer_type(0) == Tag.FLOATNUM){
+                symValue = token_buf.get_buffer_value(0);
+                curLine = token_buf.get_token_position(0);
+                if (isNegative){
+                    symValue = "-" + symValue;
+                }
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if( curLine != -1)
+                symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            while (token_buf.get_buffer_value(0).equals(",")){
+                curLine = -1;
+                symValue = "";
+                symName = "";
+                token_buf.update_buffer();
+                symType = Tag.FLOATNUM;
+                if (token_buf.get_buffer_type(0) == Tag.ID){
+                    symName = token_buf.get_buffer_value(0);
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_value(0).equals("=")){
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_value(0).equals("+")){
+                    token_buf.update_buffer();
+                }
+                else if (token_buf.get_buffer_value(0).equals("-")){
+                    isNegative = true;
+                    token_buf.update_buffer();
+                }
+                if (token_buf.get_buffer_type(0) == Tag.FLOATNUM){
+                    symValue = token_buf.get_buffer_value(0);
+                    curLine = token_buf.get_token_position(0);
+                    if (isNegative){
+                        symValue = "-" + symValue;
+                    }
+                    token_buf.update_buffer();
+                }
+                else {
+
+                }
+                if( curLine != -1)
+                    symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            }
+        }
+        else if (token_buf.get_buffer_type(0) == Tag.CHARSYM){
+            token_buf.update_buffer();
+            symType = Tag.CHAR;
+            if (token_buf.get_buffer_type(0) == Tag.ID){
+                symName = token_buf.get_buffer_value(0);
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_value(0).equals("=")){
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if (token_buf.get_buffer_type(0) == Tag.CHAR){
+                symValue = token_buf.get_buffer_value(0);
+                curLine = token_buf.get_token_position(0);
+                token_buf.update_buffer();
+            }
+            else {
+                // TODO - ERROR 错误处理
+            }
+            if( curLine != -1)
+                symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            while (token_buf.get_buffer_value(0).equals(",")){
+                curLine = -1;
+                symValue = "";
+                symName = "";
+                token_buf.update_buffer();
+                symType = Tag.CHAR;
+                if (token_buf.get_buffer_type(0) == Tag.ID){
+                    symName = token_buf.get_buffer_value(0);
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_value(0).equals("=")){
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if (token_buf.get_buffer_type(0) == Tag.CHAR){
+                    symValue = token_buf.get_buffer_value(0);
+                    curLine = token_buf.get_token_position(0);
+                    token_buf.update_buffer();
+                }
+                else {
+                    // TODO - ERROR 错误处理
+                }
+                if( curLine != -1)
+                    symbolTablel.put(symName,new InfoSym(curLine,symKind,symType,symValue));
+            }
         }
         else {
             // TODO - ERROR
@@ -124,19 +390,64 @@ public class Compile{
 
     }
 
-    // <函数声明>::= ＜标识符＞‘(’＜值参数表＞‘)’
-    void function_define_proc(){
-        //TODO - 处理函数声明
+    // ＜有返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
+    void function_call_proc(){
+        // TODO - 有返回值的函数调用语句
     }
 
-    // <过程声明>::= ＜标识符＞‘(’＜值参数表＞‘)’
+    // ＜无返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
+    void process_call_proc(){
+        // TODO - 无返回值的函数调用语句
+    }
+
+    // ＜有返回值函数定义部分＞  ::=  ＜声明头部＞‘(’＜参数表＞‘)’‘{’＜复合语句＞‘}’
+    void function_define_proc(){
+
+        StringBuffer symName = new StringBuffer();
+        InfoSym infoSym = new InfoSym(-1,SymbolType.FUNC,-1,"0");
+        statement_head_proc(symName,infoSym);
+        if (token_buf.get_buffer_value(0).equals("(")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - ERROR 错误处理
+        }
+
+        parameter_table_proc();
+        // TODO - 对于参数可能还会有什么处理 ？？？ 2333
+
+        if (token_buf.get_buffer_value(0).equals(")")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - ERROR 错误处理
+        }
+        if (token_buf.get_buffer_value(0).equals("{")){
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        symbolTablel = new Tab(symbolTablel);
+        compound_statement_proc();
+        if (token_buf.get_buffer_value(0).equals("}")){
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        symbolTablel
+    }
+
+    // ＜无返回值函数定义部分＞  ::= void＜标识符＞‘(’＜参数＞‘)’‘{’＜复合语句＞‘}’
     void process_define_proc(){
-        //TODO - 处理过程声明
+        //TODO - 处理无返回值函数定义部分
     }
 
     // <复合语句>  ::=  ［＜常量说明部分＞］［＜变量说明部分＞］＜语句列＞
     void compound_statement_proc(){
         // TODO - 处理复合语句
+
     }
 
     // <语句列>  ::= ＜语句＞｛＜语句＞｝
@@ -170,25 +481,32 @@ public class Compile{
         // TODO - 赋值语句
     }
 
-    // ＜有返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
-    void function_call_proc(){
-        // TODO - 有返回值的函数调用语句
-    }
-
-    // ＜无返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
-    void process_call_proc(){
-        // TODO - 无返回值的函数调用语句
-    }
-
     // ＜声明头部＞   ::=  int＜标识符＞ |float ＜标识符＞|char＜标识符＞
-    void statement_head_proc(){
-        // TODO - 处理声明头部
+    void statement_head_proc(StringBuffer symName, InfoSym infoSym){
+        if (token_buf.get_buffer_type(0) == Tag.INTSYM){
+            infoSym.symbolType = Tag.NUM;
+            token_buf.update_buffer();
+        }
+        else if (token_buf.get_buffer_type(0) == Tag.FLOATSYM){
+            infoSym.symbolType = Tag.FLOATNUM;
+            token_buf.update_buffer();
+        }
+        else if (token_buf.get_buffer_type(0) == Tag.CHARSYM){
+            infoSym.symbolType = Tag.CHAR;
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
+        if (token_buf.get_buffer_type(0) == Tag.ID){
+            symName.append(token_buf.get_buffer_value(0));
+            token_buf.update_buffer();
+        }
+        else {
+            // TODO - ERROR 错误处理
+        }
     }
 
-    // ＜参数＞    ::= ＜参数表＞
-    void parameter_proc(){
-        // TODO - 处理参数
-    }
 
     // ＜参数表＞    ::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
     void parameter_table_proc(){
@@ -265,7 +583,7 @@ public class Compile{
         else{
             // TODO - 错误处理 语法错误
         }
-        if (token_buf.get_buffer_vlaue(0).equals("(")){
+        if (token_buf.get_buffer_value(0).equals("(")){
             token_buf.update_buffer();
         }
         else{

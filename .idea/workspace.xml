@@ -6,38 +6,13 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="efec642e-7975-4350-a745-4e9015821274" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Mycompile/Buffer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Mycompile/Compile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Mycompile/SymbolType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Mycompile/grammer.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Table/InfoSym.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Table/Tag.java" afterDir="false" />
+    <list default="true" id="efec642e-7975-4350-a745-4e9015821274" name="Default" comment="feature_完成了向下递归子程序的的整体框架以及符号表，读入缓冲流">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/MyIDEUI/Editor$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/MyIDEUI/Editor$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/Suanfu/Suanfu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/Suanfu/Suanfu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/FloatNum.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/FloatNum.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/Lexer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/Num.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/Num.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/Tag.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/Tag.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/Token.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/Word.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/Word.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/myError_lex.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/lexer/myReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/lexer/myReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/symbols/Env.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/testTemp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/testTemp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MyIDEUI/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MyIDEUI/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Suanfu/Suanfu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Suanfu/Suanfu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/FloatNum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/FloatNum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/Num.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Num.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/Tag.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Word.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/myError_lex.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lexer/myReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/myReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/symbols/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table/Tab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testTemp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/testTemp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mycompile/Buffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mycompile/Buffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Mycompile/Compile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mycompile/Compile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Table/InfoSym.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table/InfoSym.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Table/Tab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table/Tab.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -69,32 +44,35 @@
     <session id="2021829616">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="23" />
+          <entry key="java" value="25" />
           <entry key="txt" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="23" />
+          <entry key="JAVA" value="25" />
           <entry key="PLAIN_TEXT" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="java" value="6928" />
+          <entry key="java" value="9242" />
+          <entry key="txt" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6928" />
-          <entry key="PLAIN_TEXT" value="5" />
+          <entry key="JAVA" value="9242" />
+          <entry key="PLAIN_TEXT" value="47" />
         </counts>
       </usages-collector>
     </session>
@@ -107,30 +85,48 @@
             <entry file="file://$PROJECT_DIR$/src/Mycompile/SymbolType.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="51">
-                  <caret line="3" column="27" lean-forward="true" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+                  <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Mycompile/Compile.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="22" column="37" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+                <state relative-caret-position="410">
+                  <caret line="438" column="20" selection-start-line="438" selection-start-column="20" selection-end-line="438" selection-end-column="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#187#188#0" expanded="true" />
                     <element signature="e#227#228#0" expanded="true" />
+                    <element signature="method#const_description_proc#0;class#Compile#0" />
+                    <element signature="method#var_description_proc#0;class#Compile#0" />
+                    <element signature="method#var_define_proc#0;class#Compile#0" />
+                    <element signature="method#const_define_proc#0;class#Compile#0" />
+                    <element signature="method#statement_head_proc#0;class#Compile#0" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Mycompile/test.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="209">
+                  <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="52" />
+                  <folding>
+                    <element signature="e#267#268#0" expanded="true" />
+                    <element signature="e#311#312#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="19" column="36" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="40" />
+                <state relative-caret-position="221">
+                  <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
                 </state>
               </provider>
             </entry>
@@ -138,17 +134,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Table/InfoSym.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="187">
-                  <caret line="11" column="62" lean-forward="true" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/Lexer/Word.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="102">
-                  <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+                <state>
+                  <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
                 </state>
               </provider>
             </entry>
@@ -165,12 +152,14 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Mycompile/Buffer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="452">
-                  <caret line="57" column="20" selection-start-line="57" selection-start-column="20" selection-end-line="57" selection-end-column="20" />
+                <state relative-caret-position="442">
+                  <caret line="50" column="34" selection-start-line="50" selection-start-column="34" selection-end-line="50" selection-end-column="34" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1101#1102#0" expanded="true" />
-                    <element signature="e#1150#1151#0" expanded="true" />
+                    <element signature="e#1120#1121#0" expanded="true" />
+                    <element signature="e#1177#1178#0" expanded="true" />
+                    <element signature="e#1220#1221#0" expanded="true" />
+                    <element signature="e#1252#1253#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -179,8 +168,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Lexer/Lexer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="31" column="19" lean-forward="true" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
+                <state relative-caret-position="476">
+                  <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
                 </state>
               </provider>
             </entry>
@@ -188,8 +177,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Lexer/myReader.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="146">
-                  <caret line="20" selection-start-line="20" selection-end-line="20" />
+                <state relative-caret-position="272">
+                  <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
                 </state>
               </provider>
             </entry>
@@ -198,7 +187,7 @@
             <entry file="file://$PROJECT_DIR$/src/Table/Tag.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="238">
-                  <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+                  <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
                 </state>
               </provider>
             </entry>
@@ -206,7 +195,7 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Table/Tag.java">
               <provider selected="true" editor-type-id="text-editor">
@@ -219,8 +208,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Lexer/Lexer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="266">
-                  <caret line="185" column="46" selection-start-line="185" selection-start-column="46" selection-end-line="185" selection-end-column="46" />
+                <state relative-caret-position="133">
+                  <caret line="216" column="32" lean-forward="true" selection-start-line="216" selection-start-column="32" selection-end-line="216" selection-end-column="32" />
                 </state>
               </provider>
             </entry>
@@ -228,7 +217,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Mycompile/grammer.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-603">
+                <state relative-caret-position="646">
                   <caret line="38" column="33" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="33" />
                 </state>
               </provider>
@@ -253,6 +242,11 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="fuwenxin &lt;421342785@qq.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -280,7 +274,6 @@
         <option value="$PROJECT_DIR$/src/Suanfu/Suanfu.java" />
         <option value="$PROJECT_DIR$/src/Suanfu/BuildTable.java" />
         <option value="$PROJECT_DIR$/src/MyIDEUI/Editor.java" />
-        <option value="$PROJECT_DIR$/src/Mycompile/test.java" />
         <option value="$PROJECT_DIR$/src/Table/Env.java" />
         <option value="$PROJECT_DIR$/src/Table/mtab.java" />
         <option value="$PROJECT_DIR$/src/Table/Mtab.java" />
@@ -290,12 +283,13 @@
         <option value="$PROJECT_DIR$/src/Table/Info_sym.java" />
         <option value="$PROJECT_DIR$/src/Lexer/myReader.java" />
         <option value="$PROJECT_DIR$/src/Lexer/Token.java" />
-        <option value="$PROJECT_DIR$/src/Table/InfoSym.java" />
-        <option value="$PROJECT_DIR$/src/Table/Tab.java" />
-        <option value="$PROJECT_DIR$/src/Mycompile/Buffer.java" />
         <option value="$PROJECT_DIR$/src/Table/Tag.java" />
         <option value="$PROJECT_DIR$/src/Lexer/Lexer.java" />
+        <option value="$PROJECT_DIR$/src/Mycompile/Buffer.java" />
+        <option value="$PROJECT_DIR$/src/Table/InfoSym.java" />
+        <option value="$PROJECT_DIR$/src/Mycompile/test.java" />
         <option value="$PROJECT_DIR$/src/Mycompile/Compile.java" />
+        <option value="$PROJECT_DIR$/src/Table/Tab.java" />
       </list>
     </option>
   </component>
@@ -316,12 +310,30 @@
     <option name="width" value="1948" />
     <option name="height" value="2075" />
   </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>General</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Duplicates</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -334,55 +346,24 @@
               <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="MyIDE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Lexer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyIDE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Mycompile" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyIDE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="MyIDEUI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyIDE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Suanfu" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyIDE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyIDE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Table" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="TODO&#9;ACTION&#9;ActivateTODOToolWindow" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544952304996" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544969261013" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -396,7 +377,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Compile">
+  <component name="RunManager" selected="Application.test">
     <configuration name="Compile" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Mycompile.Compile" />
       <module name="MyIDE" />
@@ -490,8 +471,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Compile" />
         <item itemvalue="Application.test" />
+        <item itemvalue="Application.Compile" />
         <item itemvalue="Application.testTemp" />
         <item itemvalue="Application.Suanfu" />
         <item itemvalue="Application.Pretreat" />
@@ -515,12 +496,21 @@
       <workItem from="1543212730029" duration="27364000" />
       <workItem from="1543298495363" duration="9085000" />
       <workItem from="1543317928811" duration="5096000" />
-      <workItem from="1544791724689" duration="23442000" />
+      <workItem from="1544791724689" duration="24809000" />
+      <workItem from="1544953732489" duration="9384000" />
     </task>
+    <task id="LOCAL-00001" summary="feature_完成了向下递归子程序的的整体框架以及符号表，读入缓冲流">
+      <created>1544952467259</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1544952467259</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93370000" />
+    <option name="totallyTimeSpent" value="104121000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -535,7 +525,7 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.31078365" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.3096942" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -544,7 +534,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.22379604" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.22252747" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3184" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -552,7 +542,7 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.2082153" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32719547" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Database" order="1" weight="0.32857144" />
@@ -569,8 +559,38 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feature_完成了向下递归子程序的的整体框架以及符号表，读入缓冲流" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature_完成了向下递归子程序的的整体框架以及符号表，读入缓冲流" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -587,13 +607,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nullnull" />
-    <entry file="file://$PROJECT_DIR$/src/Lexer/myError_lex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Lexer/myError_lex.java" />
     <entry file="jar://$USER_HOME$/Downloads/jdk-10.0.1/lib/src.zip!/java.base/java/lang/Character.java" />
     <entry file="jar://$USER_HOME$/Downloads/jdk-10.0.1/lib/src.zip!/java.base/java/util/TreeMap.java" />
     <entry file="jar://$USER_HOME$/Downloads/jdk-10.0.1/lib/src.zip!/java.base/java/util/TreeSet.java" />
@@ -627,24 +641,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mycompile/test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="e#90#91#0" expanded="true" />
-            <element signature="e#108#109#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Suanfu/Pretreat.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -665,13 +665,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mycompile/grammer.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-603">
-          <caret line="38" column="33" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -696,17 +689,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/Tag.java">
+    <entry file="file://$PROJECT_DIR$/src/Lexer/Word.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+        <state relative-caret-position="102">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mycompile/SymbolType.java">
+    <entry file="file://$PROJECT_DIR$/src/Lexer/myReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="27" lean-forward="true" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+        <state relative-caret-position="272">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/Tag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mycompile/grammer.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="33" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mycompile/Buffer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="50" column="34" selection-start-line="50" selection-start-column="34" selection-end-line="50" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1120#1121#0" expanded="true" />
+            <element signature="e#1177#1178#0" expanded="true" />
+            <element signature="e#1220#1221#0" expanded="true" />
+            <element signature="e#1252#1253#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Lexer/Lexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -717,62 +745,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Lexer/Word.java">
+    <entry file="file://$PROJECT_DIR$/src/Mycompile/SymbolType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="51">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mycompile/test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="52" />
+          <folding>
+            <element signature="e#267#268#0" expanded="true" />
+            <element signature="e#311#312#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Table/InfoSym.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="62" lean-forward="true" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="19" column="36" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mycompile/Buffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="57" column="20" selection-start-line="57" selection-start-column="20" selection-end-line="57" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1101#1102#0" expanded="true" />
-            <element signature="e#1150#1151#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Lexer/Lexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="31" column="19" lean-forward="true" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Lexer/myReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state>
+          <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Mycompile/Compile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="22" column="37" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+        <state relative-caret-position="410">
+          <caret line="438" column="20" selection-start-line="438" selection-start-column="20" selection-end-line="438" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#187#188#0" expanded="true" />
             <element signature="e#227#228#0" expanded="true" />
+            <element signature="method#const_description_proc#0;class#Compile#0" />
+            <element signature="method#var_description_proc#0;class#Compile#0" />
+            <element signature="method#var_define_proc#0;class#Compile#0" />
+            <element signature="method#const_define_proc#0;class#Compile#0" />
+            <element signature="method#statement_head_proc#0;class#Compile#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -818,7 +836,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>10</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -835,6 +853,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

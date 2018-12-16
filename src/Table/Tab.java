@@ -17,6 +17,10 @@ public class Tab {
         table = new Hashtable();  prev = p;          // 如果prev == null， 表示为全局变量
     }
 
+    public void back(){
+        // TODO -- 解决单向符号表可能gg的问题 (如何在运行找表)
+    }
+
     public void put(String name, InfoSym sym){
         table.put(name,sym);
     }
