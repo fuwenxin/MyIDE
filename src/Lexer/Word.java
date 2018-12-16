@@ -1,4 +1,4 @@
-package lexer;
+package Lexer;
 /*
  * 继承自词法单元，
  *   用于存储关键字 和 标识符

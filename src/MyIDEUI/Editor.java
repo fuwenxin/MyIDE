@@ -3,7 +3,7 @@ package MyIDEUI;
 import Suanfu.BuildTable;
 import Suanfu.Suanfu;
 import javafx.util.Pair;
-import lexer.*;
+import Lexer.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

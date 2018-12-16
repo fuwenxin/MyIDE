@@ -1,4 +1,4 @@
-package lexer;
+package Lexer;
 
 /*
  * 词法单元对象:
@@ -12,7 +12,9 @@ package lexer;
  * */
 
 public class Token {
-    public final int tag;
+    public int tag;
+    public int lineNum;
+    public int wordNum;
     public Token(int t) {
         tag = t;
     }

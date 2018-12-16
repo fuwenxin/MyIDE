@@ -1,6 +1,7 @@
-package lexer;
+package Lexer;
+import Table.Tag;
+
 import java.io.*;
-import java.text.Format;
 import java.util.*;
 
 
@@ -19,9 +20,35 @@ public class Lexer {
     private int peek;
     myReader reader;
     String filePath;
-    myError_lex myError;
-    private Hashtable words = new Hashtable();
+
     public int cur_status;
+    private Hashtable words = new Hashtable();
+
+    public Lexer(String path) throws Exception{
+
+        reader = new myReader(path);
+        filePath = path;
+        initKeyWords();
+        peek = ' ';
+    }
+
+    void  initKeyWords() {                              // 将关键字事先加入
+        reserve(new Word(Tag.IFSYM, "if"));
+        reserve(new Word(Tag.INTSYM, "int"));
+        reserve(new Word(Tag.CASESYM, "case"));
+        reserve(new Word(Tag.CHARSYM, "char"));
+        reserve(new Word(Tag.SWITCHSYM, "switch"));
+        reserve(new Word(Tag.MAINSYM, "main"));
+        reserve(new Word(Tag.ELSESYM, "else"));
+        reserve(new Word(Tag.FLOATSYM, "float"));
+        reserve(new Word(Tag.VOIDSYM, "void"));
+        reserve(new Word(Tag.CONSTSYM, "const"));
+        reserve(new Word(Tag.WHILESYM, "while"));
+        reserve(new Word(Tag.SCANFSYM, "scanf"));
+        reserve(new Word(Tag.RETURNSYM, "return"));
+        reserve(new Word(Tag.PRINTFSYM, "printf"));
+    }
+
     void reserve(Word word){
         // 将该词存入Hash表中， 以 词素 —— Token 的键值对的形式 , 用以存储标识符和关键字
         words.put(word.lexemne,word);             // string ---- int
@@ -29,31 +56,10 @@ public class Lexer {
 
 
 
-    public Lexer(String path) throws Exception{
-        initKeyWords();
-        myError = new myError_lex();
-        reader = new myReader(path,myError);
-        filePath = path;
-        peek = ' ';
-    }
-
     String formatInfo(String a,String b,String c){
         Formatter formatter = new Formatter();
         formatter.format("%10s\t%15s\t%15s\n",a,b,c);
         return formatter.toString();
-    }
-
-    void  initKeyWords(){                              // 将关键字事先进行
-        reserve(new Word(Tag.ID , "if"));
-        reserve(new Word(Tag.ID , "int"));
-        reserve(new Word(Tag.ID , "main"));
-        reserve(new Word(Tag.ID , "else"));
-        reserve(new Word(Tag.ID , "void"));
-        reserve(new Word(Tag.ID , "const"));
-        reserve(new Word(Tag.ID , "while"));
-        reserve(new Word(Tag.ID , "scanf"));
-        reserve(new Word(Tag.ID , "return"));
-        reserve(new Word(Tag.ID , "printf"));
     }
 
     String toBin(int b){
@@ -78,6 +84,8 @@ public class Lexer {
 
     public Token getToken()throws Exception{
         Token token = Scan();
+        token.lineNum = reader.lineNum;
+        token.wordNum = reader.wordNum;
         cur_status = reader.status;
         if(cur_status == 1)
             reader.close();
@@ -99,7 +107,7 @@ public class Lexer {
                 break;
             case Tag.ID:
                 Word word = (Word)token;
-                ret += formatInfo(word.lexemne,"标识符/关键字",word.lexemne);
+                ret += formatInfo(word.lexemne,"标识符",word.lexemne);
                 break;
             case Tag.PLUS:
                 Word word1 = (Word)token;
@@ -121,6 +129,14 @@ public class Lexer {
                 Word word5 = (Word)token;
                 ret += formatInfo(word5.lexemne,"字符串",word5.lexemne);
                 break;
+            case Tag.CHAR:
+                Word word6 = (Word)token;
+                ret += formatInfo(word6.lexemne,"字符串",word6.lexemne);
+                break;
+        }
+        if (token.tag >= 2009){
+            Word word = (Word)token;
+            ret += formatInfo(word.lexemne,"关键字",word.lexemne);
         }
         return ret;
     }
@@ -167,13 +183,11 @@ public class Lexer {
             }while (Character.isLetterOrDigit((char)peek) || peek == '_');
 
             String str = strBuffer.toString();
-
-
-            Word word = (Word)words.get(str);         // 在hash表中未找到的话，默认返回 null
-            if (word != null) return word;
+            Word word = (Word) words.get(str);
+            if(word != null) {
+                return word;
+            }
             word = new Word(Tag.ID,str);
-            words.put(word.tag,word.lexemne);
-
             return word;
         }
 
@@ -208,6 +222,19 @@ public class Lexer {
             peek = reader.Read();
             return new Word(Tag.MULT, ((char)last_peek) + "");
         }
+
+        if (peek == '\'') {
+            char ch = (char)reader.Read();
+            peek = reader.Read();
+            if (peek == '\''){
+                peek = reader.Read();
+                return new Word(Tag.CHAR, ch + "");
+            }
+            else {
+                // error
+            }
+        }
+
         if (peek == '#'){
             int last_peek = peek;
             peek = reader.Read();
@@ -256,9 +283,9 @@ public class Lexer {
             peek = reader.Read();
             return new Word(Tag.SPIC,(char)last_peek + "");
         }
-        myError.print_error(reader.line);
+        // error
         peek = reader.Read();
-        return null;
+        return new Token(-1);
     }
     private void Scan_Blank_Comment()throws IOException{
         for(;;peek = reader.Read()){                // 略过空格、换行符、注释

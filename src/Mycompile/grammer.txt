@@ -1,0 +1,109 @@
+＜加法运算符＞ ::= +｜-
+＜乘法运算符＞  ::= *｜/
+＜关系运算符＞  ::=  <｜<=｜>｜>=｜!=｜==
+＜字母＞   ::= ＿｜a｜．．．｜z｜A｜．．．｜Z
+＜数字＞   ::= ０｜＜非零数字＞
+＜非零数字＞  ::= １｜．．．｜９
+＜字符＞    ::=  '＜加法运算符＞｜＜乘法运算符＞｜＜字母＞｜＜数字＞'
+＜字符串＞   ::=  "｛＜合法字符＞｝"
+                               //字符串中可以出现所有合法的可打印字符集中的字符
+＜程序＞    ::= ［＜常量说明部分＞］［＜变量说明部分＞］{＜有返回值函数定义部分＞|＜无返回值函数定义部分＞}＜主函数＞
+＜常量说明部分＞ ::=  const＜常量定义＞;{ const＜常量定义＞;}
+//t表示常量的类型，n表示常量的名称，c表示常量的赋值量，s表示常量赋值的正负
+＜常量定义＞   ::=   int(上t)＜标识符＞(上n)＝［＋｜－］(上s)＜整数＞(上c)@insert(下n下CONSTVAR下t下c下s){,＜标识符＞(上n)＝［＋｜－］(上s)＜整数＞(上c)@insert(下n下CONSTVAR下t下c下s)} //改
+                                    | float(上t)＜标识符＞(上n)＝［＋｜－］(上s)［＋｜－］(上s)＜实数＞(上c)@insert(下n下CONSTVAR下t下c下s){,＜标识符＞(上n)＝［＋｜－］(上s)［＋｜－］(上s)＜实数＞(上c)@insert(下n下CONSTVAR下t下c下s)} //改
+                                    | char(上t)＜标识符＞(上n)＝＜字符＞(上c){,＜标识符＞(上n)＝＜字符＞(上c)@insert(下n下CONSTVAR下t下c下0)}
+＜整数＞    ::= ＜非零数字＞｛＜数字＞｝｜０ //改
+＜小数部分＞    ::= ＜数字＞｛＜数字＞｝|＜空＞
+＜实数＞    ::= <整数>.[＜小数部分＞] //改
+＜标识符＞    ::=  ＜字母＞｛＜字母＞｜＜数字＞｝
+＜声明头部＞   ::=  int＜标识符＞ |float ＜标识符＞|char＜标识符＞
+＜变量说明部分＞  ::= ＜变量定义＞;{＜变量定义＞;}
+//t表示变量的类型，n表示变量的名称
+＜变量定义＞  ::= ＜类型标识符＞(上t)＜标识符＞(上n)@insert(下n下VAR下t下0下0){,＜标识符＞(上n)@insert(下n下VAR下t下0下0)}
+//j表示常量在符号表的下标，n表示标识符或新标识符的名称，s表示整数或实数的正负，c表示整数或实数的赋值量
+＜常量＞ (上j)  ::= ［＋｜－］(上s) ＜整数＞(上c)@gen_var(上n)@insert(下n下CONSTVAR下INTEGER下c下s)@get_top(上j)|［＋｜－］(上s)［＋｜－］(上s) ＜实数＞(上c)@gen_var(上n)@insert(下n下CONSTVAR下REAL下c下s)@get_top(上j)|＜字符＞ (上c) @gen_var(上n)@insert(下n下CONSTVAR下CHAR下c下0)@get_top(上j)
+＜类型标识符＞      ::=  int | float | char
+//t表示函数的类型，n表示函数的名称，j表示函数名在符号表的下标
+
+＜有返回值函数定义部分＞  ::=  ＜声明头部＞(上t上n)@insert(下n下RPROC下t下0下0)‘(’＜参数表＞‘)’@look_up(下n上j) @emit(下PROC下j下-1下-1下-1)‘{’＜复合语句＞‘}’@emit(下END下j下-1下-1下-1) //改
+//n表示函数的名称，j表示函数名在符号表的下标
+
+＜无返回值函数定义部分＞  ::= void＜标识符＞(上n)@insert(下n下NPROC下-1下0下0)‘(’＜参数表＞‘)’@look_up(下n上j) @emit(下PROC下j下-1下-1下-1)‘{’＜复合语句＞‘}’@emit(下END下j下-1下-1下-1)//改
+
+＜复合语句＞   ::=  ［＜常量说明部分＞］［＜变量说明部分＞］＜语句列＞(下-1)
+//t表示参数的类型，n表示参数的名称
+
+＜参数表＞    ::=  ＜类型标识符＞(上t)＜标识符＞(上n)@insert(下n下PARA下t下0下-1){,＜类型标识符＞(上t)＜标识符＞(上n)@insert(下n下PARA下t下0下0)}| ＜空＞ //改
+
+＜主函数＞    ::= void main‘(’‘)’@emit(下MPROC下-1下-1下-1下-1)‘{’＜复合语句＞‘}’@emit(下MEND下-1下-1下-1下-1)
+
+//k表示表达式在符号表的下标，kt表示临时变量在符号表的下标，s表示表达式的正负，u表示项在符号表的下标，o表示加法运算符的名称，v表示项在符号表的下标，n表示新标识符的名称，t表示新标识符的类型，kd表示新标识符的类别
+＜表达式＞(上k)    ::= ［＋｜－］(上s)＜项＞(上u)@get_type(下u上t)@echo(下u上k){＜加法运算符＞(上o)＜项＞(上v)@gen_var(上n)@kind_fuse(下u下v上kd)@type_fuse(下u下v上t)@kd_insert(下n下kd下t下0下0)@get_top(上k)@kd_emit(下o下u下v下k下-1)@echo(下k上u)}@s_emit(下s下NEG下k下-1下kt下-1上k)
+
+//u表示项在符号表的下标，j表示因子在符号表的下标，o表示乘法运算符的名称，i表示因子在符号表的下标，n表示新标识符的名称，t表示新标识符的类型，kd表示新标识符的类别
+＜项＞(上u)     ::= ＜因子＞(上j)@echo(下j上u){＜乘法运算符＞(上o)＜因子＞(上i)@gen_var(上n)@kind_fuse(下j下i上kd)@type_fuse(下j下i上t)@kd_insert(下n下kd下t下0下0)@get_top(上u)@kd_emit(下o下j下i下u下-1)@echo(下u上j)}
+
+//j表示因子在符号表的下标，n表示标识符或新标识符的名称，s表示整数或实数的正负，c表示整数或实数的赋值量
+＜因子＞(上j)    ::= ＜标识符＞(上n)@look_up(下n上j)｜‘(’＜表达式＞(上j)‘)’｜［＋｜－］(上s)＜整数＞(上c)@gen_var(上n)@insert(下n下CONSTVAR下INTEGER下c下s)@get_top(上j)｜＜有返回值函数调用语句＞(下-1上j)|［＋｜－］(上s)［＋｜－］(上s)＜实数＞(上c)@gen_var(上n)@insert(下n下CONSTVAR下REAL下c下s)@get_top(上j)|＜字符＞(上c) @gen_var(上n)@insert(下n下CONSTVAR下CHAR下c下0)@get_top(上j)//改
+
+//lab表示语句或下一条语句的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标
+＜语句＞(下lab下labn上lab)    ::= ＜条件语句＞(下lab下labn上lab)｜＜循环语句＞(下lab下labn上lab)| ‘{’＜语句列＞(下lab)@echo(下-1上lab)‘}’｜＜有返回值函数调用语句＞(下lab)@echo(下-1上lab);
+                           |＜无返回值函数调用语句＞(下lab)@echo(下-1上lab);｜＜赋值语句＞(下lab)@echo(下-1上lab);｜＜读语句＞(下lab)@echo(下-1上lab);｜＜写语句＞(下lab)@echo(下-1上lab);｜＜空＞@echo(下-1上lab)|＜情况语句＞(下lab下labn上lab)｜＜返回语句＞(下lab)@echo(下-1上lab);
+
+//lab表示赋值语句的标号在标号表的下标，i表示标识符在符号表的下标，n表示标识符的名称，k表示表达式在符号表的下标
+＜赋值语句＞(下lab)   ::=  ＜标识符＞(上n)@look_up(下n上i)＝＜表达式＞(上k)@emit(下EVASYM下i下k下-1下lab)
+
+//lab表示条件语句或下一条语句的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标
+＜条件语句＞(下lab下labn上lab)  ::=  if ‘(’＜条件＞(下lab下labn上lab)‘)’＜语句＞(下-1下lab)
+
+//lab表示条件或下一条语句的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标，k表示表达式在符号表的下标，o表示关系运算符的名称，l表示表达式或新标识符在符号表的下标，n表示新标识符的名称
+＜条件＞(下lab下labn上lab)    ::=  ＜表达式＞(上k)＜关系运算符＞(上o)＜表达式＞(上l)@emit(下CMP下k下l下-1下lab)@labn_gen_lab(下labn上lab)@emit(下o下lab下-1下-1下-1)｜＜表达式＞(上k) @gen_var(上n)@insert(下n下CONSTVAR下INTEGER下0下0)@get_top(上l)@emit(下CMP下k下l下-1下lab)@labn_gen_lab(下labn上lab)@emit(下EQUSYM下lab下-1下-1下-1)//表达式为0条件为假，否则为真
+
+//lab表示条件语句的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标，labs表示循环语句开始的标号在标号表的下标，labe表示循环语句结束的标号在标号表的下标
+＜循环语句＞(下lab下labn上lab)   ::=  @lab_gen_lab(下lab上labs)while ‘(’＜条件＞(下labs下labn上lab)‘)’＜语句＞(下-1下-1上labe)@emit(下JMP下labs下-1下-1下labe)
+
+//lab表示情况语句的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标，labd表示缺省的标号在标号表的下标
+＜情况语句＞(下lab下labn上lab)  ::=  switch ‘(’＜表达式＞(上k)‘)’@labn_gen_lab(下labn上labn)‘{’＜情况表＞(下lab下labn下k上labd)＜缺省＞(下labd下labn上lab) ‘}’@echo(下labn上lab)
+
+//lab表示情况表的标号在标号表的下标，k表示表达式在符号表的下标，labd表示下一条语句的标号在标号表的下标
+＜情况表＞(下lab下labn下k上labd)   ::=  ＜情况子语句＞(下lab下labn下k上labd){＜情况子语句＞(下labd下labn下k上labd)}
+
+//labd表示情况子语句或下一条语句的标号在标号表的下标，k表示表达式在符号表的下标，j表示常量在符号表的下标，labn表示情况语句下一条语句的标号
+＜情况子语句＞(下labd下labn下k上labd)  ::=  case＜常量＞(上j)@emit(下CMP下k下j下-1下labd)@gen_lab(上labd)@emit(下EQUSYM下labd下-1下-1下-1)：＜语句＞(下-1下labn)@emit(下JMP下labn下-1下-1下-1)
+
+//labd表示缺省的标号在标号表的下标，labn表示下一条语句的标号在标号表的下标
+＜缺省＞(下labd下labn)   ::=  default : ＜语句＞(下labd下labn)|＜空＞@emit(下NOP下-1下-1下-1下labd)
+
+//j表示返回值在符号表的下标，n表示标识符的名称，i表示标识符在符号表的下标，m表示新标识符的名称，t表示标识符的类型，ava表示值参数表和函数的匹配标志
+＜有返回值函数调用语句＞(下lab上j) ::= ＜标识符＞(上n)@look_up(下n上i)@get_type(下i上t)‘(’＜值参数表＞(下i上ava)‘)’@gen_var(上m)@insert(下m下TEMP下t下0下0)@get_top(上j)@ava_emit(下ava下RFUNC下i下-1下j下lab)
+
+//n表示标识符的名称，i表示标识符在符号表的下标，ava表示值参数表和函数的匹配标志
+＜无返回值函数调用语句＞(下lab) ::= ＜标识符＞(上n)@look_up(下n上i)‘(’＜值参数表＞(下i上ava)‘)’@ava_emit(下ava下NFUNC下i下-1下-1下lab)
+
+//i表示调用函数名称在符号表的下标，k表示表达式在符号表的下标，ava表示值参数表和函数的匹配标志
+＜值参数表＞(下i上ava)   ::= ＜表达式＞(上k)@check_para(下i下k上ava)@echo(下i+1上i)@ava_emit(下ava下LDPAR下k下-1下-1下-1){,＜表达式＞(上k)@check_para(下i下k上ava)@echo(下i+1上i)@ava_emit(下ava下LDPAR下k下-1下-1下-1)}｜＜空＞@check_none(下i上ava)
+
+//lab表示语句列或下一条语句的标号在标号表的下标，labe表示下一条语句或语句列结束的标号在标号表的下标
+＜语句列＞(下lab)   ::= ＜语句＞(下lab下-1上labe)｛＜语句＞(下labe下-1上labe)｝@emit(下NOP下-1下-1下-1下labe)
+
+//lab表示读语句的标号在标号表的下标，n表示标识符的名称，i表示标识符在符号表的下标
+＜读语句＞(下lab)    ::=  scanf ‘(’＜标识符＞(上n)@look_up(下n上i)@emit(下SCANF下i下-1下-1下lab){,＜标识符＞(上n)@look_up(下n上i)@emit(下SCANF下i下-1下-1下-1)}‘)’
+
+//lab表示写语句的标号在标号表的下标，n表示字符串的内容，i表示表达式在符号表的下标，j表示字符串在字符串表的下标
+＜写语句＞(下lab)    ::= printf ‘(’ ＜字符串＞(上n)@gen_str(上j)@str_content(下j下n)@emit(下PRINTFS下j下-1下-1下lab),＜表达式＞(上i)@emit(下PRINTFE下i下-1下-1下-1) ‘)’|printf ‘(’＜字符串＞(上n) @gen_str(上j)@str_content(下j下n)@emit(下PRINTFS下j下-1下-1下lab)‘)’|printf ‘(’＜表达式＞(上i)@emit(下PRINTF下i下-1下-1下lab)‘)’
+
+//lab表示返回语句的标号在标号表的下标，k表示表达式在符号表的下标
+＜返回语句＞(下lab)   ::=  return@echo(下-1上k)[‘(’＜表达式＞(上k)‘)’] @emit(下RET下k下-1下-1下lab)
+
+
+
+附加说明：
+
+（1）char类型的表达式，用字符的ASCII码对应的整数参加运算，在写语句中输出字符
+
+（2）标识符区分大小写字母
+
+（3）写语句中的字符串原样输出
+
+（4）情况语句中，switch后面的表达式和case后面的常量只允许出现int和char类型

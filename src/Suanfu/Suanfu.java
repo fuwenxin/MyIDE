@@ -1,7 +1,7 @@
 package Suanfu;
 
 import javafx.util.Pair;
-import lexer.*;
+import Lexer.*;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;

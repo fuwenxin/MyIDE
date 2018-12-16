@@ -1,5 +1,4 @@
-package lexer;
-import javax.swing.*;
+package Lexer;
 import java.io.*;
 
 /*
@@ -10,15 +9,15 @@ import java.io.*;
 public class myReader {
     int cur_peak;
     int last_peek;
-    int line;
+    int lineNum;
+    int wordNum;
     int status;               // 用于判断是否到达文件末尾
     FileReader fileReader;
     PushbackReader pushbackReader;
-    myError_lex myError;
-    public myReader(String path,myError_lex error)throws IOException{
+    public myReader(String path)throws IOException{
         status = 0;
-        line = 1;
-        myError = error;
+        lineNum = 1;
+        wordNum = 0;
         fileReader = new FileReader(path);
         pushbackReader = new PushbackReader(fileReader,20);
     }
@@ -26,14 +25,19 @@ public class myReader {
     public int Read()throws IOException{
         last_peek = cur_peak;
         cur_peak = pushbackReader.read();
-        if(cur_peak == '\n')
-            line = line + 1;
+        if(cur_peak == '\n') {
+            lineNum = lineNum + 1;
+            wordNum = 0;
+        }
+        else{
+            wordNum ++;
+        }
         if (status == 1){
-            myError.print_error(line);
+            // TODO- ERROR(LERERROR) 错误处理
         }
         else if(cur_peak == -1) {
             status = 1;
-            //throw new EOFException();
+            // TODO - ERROR(LERERROR) 错误处理
         }
         return cur_peak;
     }
