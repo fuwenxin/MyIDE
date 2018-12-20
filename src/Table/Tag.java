@@ -25,6 +25,7 @@ public class Tag {
             WHILESYM = 2018,
             SCANFSYM = 2019,
             RETURNSYM = 2020,
-            PRINTFSYM = 2021
+            PRINTFSYM = 2021,
+            DEFAULTSYM = 2022
                     ;
 }

@@ -15,7 +15,7 @@ public class Buffer {
     Token cur_read_token;
     public Token []buffer;
     public Buffer(){  // 预读入三个词法单元
-        file_path = ".";
+        file_path = "D:\\code\\Java\\MyIDE\\src\\test\\test_lexer.txt";
         buffer_pointer = 0;
         try {
             lexer = new Lexer(file_path);
@@ -24,7 +24,7 @@ public class Buffer {
             buffer[1] = new Token(-1);
             buffer[2] = new Token(-1);
             cur_read_token = lexer.getToken();
-            if(cur_read_token.tag == -1)         // cur_status == 1 表示已读结束
+            if(cur_read_token.tag == -1)         // 表示已读结束
                 return;
             buffer[0] = cur_read_token;
             cur_read_token = lexer.getToken();
@@ -50,16 +50,14 @@ public class Buffer {
 
     public String get_buffer_value(int n){
         Token tok = buffer[(buffer_pointer + n)%3];
-        if(tok.tag == Tag.ID){
-            return ((Word)tok).lexemne;
-        }
         if(tok.tag == Tag.NUM){
             return ((Num)tok).Ivalue + "";
         }
-        if(tok.tag == Tag.FLOATNUM){
+        else if(tok.tag == Tag.FLOATNUM){
             return ((FloatNum)tok).F_Num + "";
         }
-        return null;
+        else
+            return ((Word)tok).lexemne;
     }
 
     /**

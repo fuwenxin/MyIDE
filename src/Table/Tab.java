@@ -12,17 +12,24 @@ import java.util.*;
 public class Tab {
     private Hashtable table;
     protected Tab prev;
+    private int pos;
 
-    public Tab(Tab p){
+    public Tab(Tab p,int loc){
         table = new Hashtable();  prev = p;          // 如果prev == null， 表示为全局变量
-    }
-
-    public void back(){
-        // TODO -- 解决单向符号表可能gg的问题 (如何在运行找表)
+        pos = loc;
     }
 
     public void put(String name, InfoSym sym){
         table.put(name,sym);
+    }
+
+    public void refresh(String name ,InfoSym sym){
+        table.remove(name);
+        table.put(name,sym);
+    }
+
+    public int getPos(){
+        return pos;
     }
 
     public InfoSym get(String name){

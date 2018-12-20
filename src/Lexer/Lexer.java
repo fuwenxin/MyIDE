@@ -47,6 +47,7 @@ public class Lexer {
         reserve(new Word(Tag.SCANFSYM, "scanf"));
         reserve(new Word(Tag.RETURNSYM, "return"));
         reserve(new Word(Tag.PRINTFSYM, "printf"));
+        reserve(new Word(Tag.DEFAULTSYM, "default"));
     }
 
     void reserve(Word word){
