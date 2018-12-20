@@ -14,5 +14,4 @@ public class InfoSym{
         symbolKind = kind;
         symValue = value;
     }
-
 }

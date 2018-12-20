@@ -15,7 +15,8 @@ public class Buffer {
     Token cur_read_token;
     public Token []buffer;
     public Buffer(){  // 预读入三个词法单元
-        file_path = "D:\\code\\Java\\MyIDE\\src\\test\\test_lexer.txt";
+        file_path = "src/Mycompile/test.txt";
+        System.out.println( System.getProperty("java.class.path"));
         buffer_pointer = 0;
         try {
             lexer = new Lexer(file_path);
@@ -37,6 +38,7 @@ public class Buffer {
             buffer[2] = cur_read_token;
         }catch (Exception e){
             // error
+            e.printStackTrace();
         }
     }
 

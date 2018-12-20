@@ -23,7 +23,7 @@ public class Tab {
         table.put(name,sym);
     }
 
-    public void refresh(String name ,InfoSym sym){
+    public void change(String name ,InfoSym sym){
         table.remove(name);
         table.put(name,sym);
     }

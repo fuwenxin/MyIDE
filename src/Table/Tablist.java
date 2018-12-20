@@ -1,6 +1,7 @@
 package Table;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Tablist {
     private ArrayList tables;
@@ -8,9 +9,11 @@ public class Tablist {
 
     private int sumTables;
     private int curTable;
+    private Stack lastTable;
 
     public Tablist(Tab tab){
         tables = new ArrayList<Tab>();
+        lastTable = new Stack();
         tables.add(tab);
         sumTables = 1;
         curTable = 0;
@@ -26,6 +29,15 @@ public class Tablist {
 
     public Tab getCurTable(){
         return (Tab)tables.get(curTable);
+    }
+
+    public void shiftTab(int loc){
+        lastTable.push(curTable);
+        curTable = loc;
+    }
+
+    public void shiftBack(){
+        curTable = (int)lastTable.pop();
     }
 
     public void frontable(){            // 当前表指针指向上一层的表

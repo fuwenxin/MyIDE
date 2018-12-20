@@ -107,7 +107,7 @@ public class Compile{
         int symType = -1;
         int symLine = -1;
         String symName = "";
-        String symValue = "0";
+        String symValue = "0";          // 变量的默认值为　０　
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
             symType = Tag.NUM;
             token_buf.update_buffer();
@@ -132,6 +132,7 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         if (symLine != -1)
+            tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,symValue));
 
         while (token_buf.get_buffer_value(0).equals(",")){
             symLine = -1;
@@ -381,26 +382,13 @@ public class Compile{
         }
     }
 
-    // ＜常量＞   ::=  ＜整数＞| ＜实数＞|＜字符＞
-    void const_proc(){
-        // TODO - 常量  估计用不到
-    }
-
-    //＜整数＞    ::= ［＋｜－］＜非零数字＞｛＜数字＞｝｜０
-    void integer_proc(){
-        // TODO - 整数  估计用不到
-    }
-
-    // ＜实数＞    ::= ［＋｜－］<整数>.[＜小数部分＞]
-    void real_num_proc(){
-        // TODO - 实数 估计用不到
-    }
-
     // ＜有返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
     void function_call_proc(){
         System.out.println("<有返回值函数调用语句>");
+        int funcTable = -1;
         if (token_buf.get_buffer_type(0) == Tag.ID){
-
+            InfoSym infoSym = tab_list.getCurTable().get(token_buf.get_buffer_value(0));
+            funcTable = Integer.parseInt(infoSym.symValue);
             token_buf.update_buffer();
         }
         else{
@@ -412,7 +400,13 @@ public class Compile{
         else{
             // TODO - 错误处理 ERROR
         }
-        value_parameter_table_proc();
+        if (funcTable != -1) {
+            tab_list.shiftTab(funcTable);
+            value_parameter_table_proc();
+        }
+        else{
+            // TODO - 错误处理
+        }
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
         }
@@ -420,6 +414,9 @@ public class Compile{
             // TODO - 错误处理 ERROR
         }
 
+        if (funcTable != -1){
+            tab_list.shiftBack();
+        }
         // TODO - 函数调用处理和返回值的处理
     }
 
@@ -576,7 +573,7 @@ public class Compile{
 
     //＜语句＞    ::= ＜条件语句＞｜＜循环语句＞| ‘{’＜语句列＞‘}’｜＜有返回值函数调用语句＞;|＜无返回值函数调用语句＞;
     //			｜＜赋值语句＞;｜＜读语句＞;｜＜写语句＞;｜＜空＞
-    //			 |＜情况语句＞｜＜返回语句
+    //			 |＜情况语句＞｜＜返回语句>
     void statement_proc(){
         System.out.println("<语句>");
         if (token_buf.get_buffer_type(0) == Tag.CASESYM
@@ -773,6 +770,7 @@ public class Compile{
     // ＜声明头部＞   ::=  int＜标识符＞ |float ＜标识符＞|char＜标识符＞
     void statement_head_proc(StringBuffer symName, InfoSym infoSym){
         System.out.println("<声明头部>");
+        infoSym.lineNum = token_buf.get_token_position(0);
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
             infoSym.symbolType = Tag.NUM;
             token_buf.update_buffer();
@@ -938,22 +936,97 @@ public class Compile{
 
     // ＜情况语句＞  ::=  switch ‘(’＜表达式＞‘)’ ‘{’＜情况表＞＜缺省＞ ‘}’
     void switch_statement_proc(){
-        // TODO - 处理情况语句
+        if (token_buf.get_buffer_type(0) == Tag.SWITCHSYM){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理
+        }
+        if (token_buf.get_buffer_value(0).equals("(")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理
+        }
+        expression_proc();
+        if (token_buf.get_buffer_value(0).equals(")")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO -　错误处理
+        }
+        if (token_buf.get_buffer_value(0).equals("{")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理
+        }
+        switch_table_proc();
+        default_proc();
+        if (token_buf.get_buffer_value(0).equals("}")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理
+        }
     }
 
     //＜情况表＞   ::=  ＜情况子语句＞{＜情况子语句＞}
     void switch_table_proc(){
-        // TODO - 处理情况表
+        switch_proc();
+
+        while (token_buf.get_buffer_type(0) == Tag.CASESYM){
+            switch_proc();
+        }
     }
 
     // ＜情况子语句＞  ::=  case＜常量＞：＜语句＞
     void switch_proc(){
-        // TODO - 处理情况子语句
+        if (token_buf.get_buffer_type(0) == Tag.CASESYM){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理　ERROR
+        }
+        if (token_buf.get_buffer_type(0) == Tag.NUM
+                || token_buf.get_buffer_type(0) == Tag.CHAR){
+            token_buf.update_buffer();
+        }
+        else if (token_buf.get_buffer_type(0) == Tag.ID){
+            InfoSym infoSym = tab_list.getCurTable().get(token_buf.get_buffer_value(0));
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理　ERROR
+        }
+        if (token_buf.get_buffer_value(0).equals(":")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理 ERROR
+        }
+        statement_proc();
     }
 
     // ＜缺省＞   ::=  default : ＜语句＞|＜空＞
     void default_proc(){
-        // TODO - 处理default缺省语句
+        if (token_buf.get_buffer_type(0) == Tag.DEFAULTSYM){
+            token_buf.update_buffer();
+        }
+        else if (token_buf.get_buffer_value(0).equals("}")){
+            return;
+        }
+        else{
+            // TODO - 错误处理 ERROR
+        }
+        if (token_buf.get_buffer_value(0).equals(":")){
+            token_buf.update_buffer();
+        }
+        else{
+            // TODO - 错误处理 ERROR
+        }
+        statement_proc();
+
     }
 
     // ＜值参数表＞ ::= ＜表达式＞{,＜表达式＞}｜＜空＞
@@ -1125,9 +1198,15 @@ public class Compile{
         }
         tab_list.frontable();
         // TODO - 解释程序等等 。。。
-    }
-    //------------------------------------------------------------------------------------------------------------------
 
+
+    }
+    //----------------------------------------------------------------------------------------------------------
+
+
+
+
+    //-----------------------------------------------------------------------------------------------------------------
     public static void main(String []args){   // Test ------------------------
         Compile compile = new Compile();
         compile.program_entry();
