@@ -5,9 +5,12 @@ import Table.Tab;
 import Table.Tablist;
 import Table.Tag;
 
+import javax.sound.sampled.Line;
+
 public class Compile{
     Buffer token_buf;
     Tablist tab_list;
+    int Pc;
     public Compile(){
         token_buf = new Buffer();
     }
@@ -18,6 +21,7 @@ public class Compile{
     //					＜主函数＞
     void program_entry(){
         //TODO -  write_headsge() 如果有时间写x86可以使用到
+        Pc = 0;
         System.out.println("<程序>");
         tab_list = new Tablist(new Tab(null,0));
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
@@ -25,7 +29,7 @@ public class Compile{
         }
         if ((token_buf.get_buffer_type(1) == Tag.ID && token_buf.get_buffer_value(2).equals(";"))||
                 (token_buf.get_buffer_type(1) == Tag.ID && token_buf.get_buffer_value(2).equals(","))){
-            var_description_proc();
+            var_description_proc(0);
         }
         while (token_buf.get_buffer_type(1) == Tag.ID){
             if (token_buf.get_buffer_type(0) == Tag.INTSYM
@@ -80,9 +84,10 @@ public class Compile{
     }
 
     // <变量声明子程序>::= ＜变量定义＞;{＜变量定义＞;}
-    void var_description_proc(){
+    void var_description_proc(int numPara){
         System.out.println("<变量声明子程序>");
-        var_define_proc();
+        int varNum = 0;
+        varNum += var_define_proc(numPara);
         if (token_buf.get_buffer_value(0).equals(";")){
             token_buf.update_buffer();
         }
@@ -90,7 +95,7 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         while (token_buf.get_buffer_value(2).equals(";") || token_buf.get_buffer_value(2).equals(",")){
-            var_define_proc();
+            varNum += var_define_proc(numPara);
             if (token_buf.get_buffer_value(0).equals(";")){
                 token_buf.update_buffer();
             }
@@ -98,14 +103,18 @@ public class Compile{
                 // TODO - ERROR 错误处理
             }
         }
+        if (varNum != 0){
+            _emit("INT","0",varNum + "");
+        }
     }
 
     // ＜变量定义＞  ::= ＜类型标识符＞＜标识符＞{,＜标识符＞}
-    void var_define_proc(){
+    int var_define_proc(int numPara){
         System.out.println("<变量定义>");
         int symKind = SymbolType.VAR;
         int symType = -1;
         int symLine = -1;
+        int varNum = 0;
         String symName = "";
         String symValue = "0";          // 变量的默认值为　０　
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
@@ -131,9 +140,10 @@ public class Compile{
         else {
             // TODO - ERROR 错误处理
         }
-        if (symLine != -1)
-            tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,symValue));
-
+        if (symLine != -1) {
+            varNum ++;
+            tab_list.getCurTable().put(symName, new InfoSym(symLine, symKind, symType,4 + numPara + varNum, symValue));
+        }
         while (token_buf.get_buffer_value(0).equals(",")){
             symLine = -1;
             symName = "";
@@ -146,9 +156,12 @@ public class Compile{
             else {
                 // TODO - ERROR 错误处理
             }
-            if (symLine != -1)
-                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,symValue));
+            if (symLine != -1){
+                varNum ++;
+                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,4 + numPara + varNum,symValue));
+            }
         }
+        return varNum;
     }
 
     // ＜常量定义＞   ::=   int＜标识符＞＝[+|-]＜整数＞{,＜标识符＞＝[+|-]＜整数＞}
@@ -197,7 +210,7 @@ public class Compile{
                 // TODO - ERROR 错误处理
             }
             if( curLine != -1)
-                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             while (token_buf.get_buffer_value(0).equals(",")){
                 curLine = -1;
                 symValue = "";
@@ -237,7 +250,7 @@ public class Compile{
                     // TODO - ERROR 错误处理
                 }
                 if( curLine != -1)
-                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             }
         }
         else if (token_buf.get_buffer_type(0) == Tag.FLOATSYM){
@@ -278,7 +291,7 @@ public class Compile{
                 // TODO - ERROR 错误处理
             }
             if( curLine != -1)
-                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             while (token_buf.get_buffer_value(0).equals(",")){
                 curLine = -1;
                 symValue = "";
@@ -317,7 +330,7 @@ public class Compile{
 
                 }
                 if( curLine != -1)
-                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             }
         }
         else if (token_buf.get_buffer_type(0) == Tag.CHARSYM){
@@ -345,7 +358,7 @@ public class Compile{
                 // TODO - ERROR 错误处理
             }
             if( curLine != -1)
-                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             while (token_buf.get_buffer_value(0).equals(",")){
                 curLine = -1;
                 symValue = "";
@@ -374,7 +387,7 @@ public class Compile{
                     // TODO - ERROR 错误处理
                 }
                 if( curLine != -1)
-                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,symValue));
+                    tab_list.getCurTable().put(symName,new InfoSym(curLine,symKind,symType,-1,symValue));
             }
         }
         else {
@@ -452,7 +465,7 @@ public class Compile{
     void function_define_proc(){
         System.out.println("<有返回值函数定义部分>");
         StringBuffer symName = new StringBuffer();
-        InfoSym infoSym = new InfoSym(-1,SymbolType.FUNC,-1, "");
+        InfoSym infoSym = new InfoSym(-1,SymbolType.FUNC,-1,Pc +1, "");
         statement_head_proc(symName,infoSym);
         if (token_buf.get_buffer_value(0).equals("(")){
             token_buf.update_buffer();
@@ -461,11 +474,12 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         infoSym.symValue = tab_list.addTable(tab_list.getCurTable()) + "";  // func 和 proc 的value存储的是其对应符号表的下标
-        parameter_table_proc();
+        int numPara = parameter_table_proc();
         // TODO - 对于参数可能还会有什么处理 ？？？ 2333
 
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
+            _emit("MKS","0",numPara + "");
         }
         else{
             // TODO - ERROR 错误处理
@@ -476,7 +490,7 @@ public class Compile{
         else {
             // TODO - ERROR 错误处理
         }
-        compound_statement_proc();
+        compound_statement_proc(numPara);
 
         tab_list.frontable();
 
@@ -507,7 +521,7 @@ public class Compile{
         else{
             // TODO - ERROR 错误处理
         }
-        InfoSym infoSym = new InfoSym(token_buf.get_token_position(0),SymbolType.PROC,-1, "");
+        InfoSym infoSym = new InfoSym(token_buf.get_token_position(0),SymbolType.PROC,-1,Pc + 1, "");
         infoSym.symValue = tab_list.addTable(tab_list.getCurTable()) + "";
         if (token_buf.get_buffer_value(0).equals("(")){
             token_buf.update_buffer();
@@ -515,9 +529,10 @@ public class Compile{
         else{
             // TODO - ERROR 错误处理
         }
-        parameter_table_proc();
+        int numPara = parameter_table_proc();
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
+            _emit("MKS","0",numPara+"");
         }
         else {
             // TODO - ERROR 错误处理
@@ -529,7 +544,7 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
 
-        compound_statement_proc();
+        compound_statement_proc(numPara);
         tab_list.frontable();
         tab_list.getCurTable().put(symName,infoSym);
         if (token_buf.get_buffer_value(0).equals("}")){
@@ -541,14 +556,14 @@ public class Compile{
     }
 
     // <复合语句>  ::=  ［＜常量说明部分＞］［＜变量说明部分＞］＜语句列＞
-    void compound_statement_proc(){
+    void compound_statement_proc(int numPara){
         System.out.println("<复合语句>");
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             const_description_proc();
         }
         if ((token_buf.get_buffer_type(1) == Tag.ID && token_buf.get_buffer_value(2).equals(";"))||
                 (token_buf.get_buffer_type(1) == Tag.ID && token_buf.get_buffer_value(2).equals(","))){
-            var_description_proc();
+            var_description_proc(numPara);
         }
         statement_list_proc();
     }
@@ -797,13 +812,14 @@ public class Compile{
 
 
     // ＜参数表＞    ::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
-    void parameter_table_proc(){
+    int parameter_table_proc(){
         System.out.println("<参数表>");
         int symKind = SymbolType.PARA;
         int symType = -1;
         int symLine = -1;
         String symName = "";
         String symValue = "0";
+        int numPara = 0;
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
             symType = Tag.NUM;
             token_buf.update_buffer();
@@ -817,7 +833,7 @@ public class Compile{
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_value(0).equals(")")){
-            return;    // <空>
+            return 0;    // <空>
         }
         else {
             // TODO - ERROR　错误处理
@@ -831,7 +847,8 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         if (symLine != -1){
-            tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,symValue));
+            numPara ++ ;
+            tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,4 + numPara,symValue));
         }
         while (token_buf.get_buffer_value(0).equals(",")){
             token_buf.update_buffer();
@@ -862,16 +879,18 @@ public class Compile{
                 // TODO - ERROR 错误处理
             }
             if (symLine != -1){
-                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,symValue));
+                numPara ++;
+                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,numPara + 4,symValue));
             }
         }
+        return numPara;
     }
 
     // ＜表达式＞    ::= ［＋｜－］＜项＞{＜加法运算符＞＜项＞}
     void expression_proc(){
         System.out.println("<表达式>");
         boolean isNegative = false;
-        InfoSym infoSym = new InfoSym(token_buf.get_token_position(0),-1,-1,"0");
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
         if (token_buf.get_buffer_value(0).equals("+")){
             token_buf.update_buffer();
         }
@@ -884,30 +903,46 @@ public class Compile{
 
         while (token_buf.get_buffer_value(0).equals("+") || token_buf.get_buffer_value(0).equals("-")){
             // infoSym = new InfoSym(token_buf.get_token_position(0),-1,-1,"0");
+            String opt = token_buf.get_buffer_value(0);
             token_buf.update_buffer();
             item_proc(infoSym);
+            if (infoSym.symbolType == Tag.FLOATNUM){
+                _oprf(opt);
+            }
+            else {
+                _opr(opt);
+            }
         }
     }
 
     // ＜项＞  ::= ＜因子＞{＜乘法运算符＞＜因子＞}
     void item_proc(InfoSym infoSym){
         System.out.println("<项>");
-        factor_proc();
+        factor_proc(infoSym);
         // TODO 可能要对乘法有些处理
         while (token_buf.get_buffer_value(0).equals("*") || token_buf.get_buffer_value(0).equals("/")){
+            String opt = token_buf.get_buffer_value(0);
             token_buf.update_buffer();
-            factor_proc();
+            factor_proc(infoSym);
+            if (infoSym.symbolType == Tag.FLOATNUM){
+                _oprf(opt);
+            }
+            else {
+                _opr(opt);
+            }
         }
     }
 
     // ＜因子＞    ::= ＜标识符＞｜‘(’＜表达式＞‘)’｜＜整数＞｜＜有返回值函数调用语句＞|＜实数＞|＜字符＞
-    void factor_proc(){
+    void factor_proc(InfoSym sym){
         System.out.println("<因子>");
         if (token_buf.get_buffer_type(0) == Tag.ID){
             String symName = token_buf.get_buffer_value(0);
             InfoSym infoSym = tab_list.getCurTable().get(symName);
-
-            // TODO - 完成infoSym的使用2333
+            if (infoSym != null) {
+                sym.symbolType = _lod_type(sym.symbolType, infoSym.symbolType ,
+                        tab_list.getCurTable().getSymLayer(symName) + "",infoSym.relatedPos + "");
+            }
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_value(0).equals("(")){
@@ -921,12 +956,15 @@ public class Compile{
             }
         }
         else if (token_buf.get_buffer_type(0) == Tag.NUM){
+            sym.symbolType = _lit_type(sym.symbolType, Tag.NUM ,token_buf.get_buffer_value(0));
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_type(0) == Tag.FLOATNUM){
+            sym.symbolType = _lit_type(sym.symbolType, Tag.FLOATNUM ,token_buf.get_buffer_value(0));
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_type(0) == Tag.CHAR){
+            sym.symbolType = _lit_type(sym.symbolType, Tag.CHAR ,token_buf.get_buffer_value(0));
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_type(0) == Tag.ID && token_buf.get_buffer_value(1).equals("(")){
@@ -1184,12 +1222,13 @@ public class Compile{
         }
         if (token_buf.get_buffer_value(0).equals("{")){
             token_buf.update_buffer();
+            _emit("MKS","0","0");
         }
         else {
             // TODO - 错误处理
         }
         tab_list.addTable(tab_list.getCurTable());
-        compound_statement_proc();
+        compound_statement_proc(0);
         if (token_buf.get_buffer_value(0).equals("}")){
             token_buf.update_buffer();
         }
@@ -1204,6 +1243,128 @@ public class Compile{
     //----------------------------------------------------------------------------------------------------------
 
 
+    void _opr(String opt){
+        String y = "-1";
+        switch (opt){
+            case "RE":
+                y = 0 + "";
+                break;
+            case "+":
+                y = 2 + "";
+                break;
+            case "-":
+                y = 3 + "";
+                break;
+            case "*":
+                y = 4 + "";
+                break;
+            case "/":
+                y = 5 + "";
+                break;
+            case "==":
+                y = 8 + "";
+                break;
+            case "!=":
+                y = 9 + "";
+                break;
+            case "<":
+                y = 10 + "";
+                break;
+            case ">":
+                y = 11 + "";
+                break;
+            case ">=":
+                y = 12 + "";
+                break;
+            case "<=":
+                y = 13 + "";
+                break;
+        }
+        _emit("OPR","0",y);
+    }
+
+    int _lod_type(int leftType,int rightType,String layer,String pos){
+        if (leftType == -1){
+            _emit("LOD",layer,pos);
+        }
+        else if ((leftType == Tag.CHAR || leftType == Tag.NUM) && (rightType == Tag.FLOATNUM)){
+            _emit("FTI","0","0");
+            _emit("LOD",layer,pos);
+            leftType = rightType;
+        }
+        else if (leftType == Tag.FLOATNUM && (rightType == Tag.CHAR || rightType == Tag.NUM)){
+            _emit("LOD",layer,pos);
+            _emit("FTI","","");
+        }
+        else {
+            _emit("LOD",layer,pos);
+        }
+        return leftType;
+    }
+
+    int _lit_type(int leftType,int rightType,String value){
+        if (leftType == -1){
+            _emit("LIT","0",value);
+        }
+        else if ((leftType == Tag.CHAR || leftType == Tag.NUM) && (rightType == Tag.FLOATNUM)){
+            _emit("FTI","0","0");
+            _emit("LIT","0",value);
+            leftType = rightType;
+        }
+        else if (leftType == Tag.FLOATNUM && (rightType == Tag.CHAR || rightType == Tag.NUM)){
+            _emit("LIT","0",value);
+            _emit("FTI","","");
+        }
+        else {
+            _emit("LIT","0",value);
+        }
+        return leftType;
+    }
+
+    void _oprf(String opt){
+        String y = "-1";
+        switch (opt){
+            case "RE":
+                y = 0 + "";
+                break;
+            case "+":
+                y = 2 + "";
+                break;
+            case "-":
+                y = 3 + "";
+                break;
+            case "*":
+                y = 4 + "";
+                break;
+            case "/":
+                y = 5 + "";
+                break;
+            case "==":
+                y = 8 + "";
+                break;
+            case "!=":
+                y = 9 + "";
+                break;
+            case "<":
+                y = 10 + "";
+                break;
+            case ">":
+                y = 11 + "";
+                break;
+            case ">=":
+                y = 12 + "";
+                break;
+            case "<=":
+                y = 13 + "";
+                break;
+        }
+        _emit("OPRF","0",y);
+    }
+
+    void _emit(String str,String x,String y){
+        Pc ++;
+        System.out.println(str + "\t" + x + "\t" + y);
+    }
 
 
     //-----------------------------------------------------------------------------------------------------------------

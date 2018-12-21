@@ -291,7 +291,7 @@ public class Lexer {
     private void Scan_Blank_Comment()throws IOException{
         for(;;peek = reader.Read()){                // 略过空格、换行符、注释
             if (peek == ' ' || peek == '\t') continue;
-            else if (peek == '\n') continue;
+            else if (peek == '\n'||peek != '\r') continue;
             else if (peek == '/') {
                 if(Scan_Comment()){
                     continue;
@@ -310,7 +310,7 @@ public class Lexer {
             if(peek == '/'){                  // 判断 '//'
                 do{
                     peek = reader.Read();
-                }while (peek != '\n');
+                }while (peek != '\n' || peek != '\r');
             }
             else if (peek == '*'){            // 判断  '/*'
                 int status = 0;

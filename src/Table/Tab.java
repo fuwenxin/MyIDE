@@ -39,4 +39,14 @@ public class Tab {
         }
         return null;
     }
+
+    public int getSymLayer(String name){
+        int layer = 0;
+        for (Tab e = this; e != null; e = e.prev,layer ++){  // 从本语句块开始，逐个寻找目标关键字
+            InfoSym infoSym = (InfoSym) e.table.get(name);
+            if (infoSym != null) return layer;
+        }
+        return -1;
+    }
+
 }

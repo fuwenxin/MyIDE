@@ -55,6 +55,10 @@ public class Buffer {
         if(tok.tag == Tag.NUM){
             return ((Num)tok).Ivalue + "";
         }
+        if (tok.tag == Tag.CHAR){
+            int num = (((Word)tok).lexemne).charAt(0);
+            return num + "";
+        }
         else if(tok.tag == Tag.FLOATNUM){
             return ((FloatNum)tok).F_Num + "";
         }
