@@ -9,6 +9,7 @@ void main()
     int y;
     int c;
     c = 1;
+    scanf(c,y);
     while (c < 6){
         y = c + 1;
         c = c + 1;

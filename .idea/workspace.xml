@@ -8,10 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="efec642e-7975-4350-a745-4e9015821274" name="Default" comment="编写了部分递归调用子程序">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/Lexer/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/Lexer/Lexer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/Mycompile/Compile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/Mycompile/Compile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyIDE/Mycompile/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyIDE/Mycompile/test.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lexer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Lexer/Lexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Mycompile/Compile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mycompile/Compile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Mycompile/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mycompile/test.txt" afterDir="false" />
     </list>
@@ -85,14 +81,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="java" value="21584" />
-          <entry key="txt" value="1341" />
+          <entry key="java" value="21806" />
+          <entry key="txt" value="1355" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="21584" />
-          <entry key="PLAIN_TEXT" value="1346" />
+          <entry key="JAVA" value="21806" />
+          <entry key="PLAIN_TEXT" value="1360" />
         </counts>
       </usages-collector>
     </session>
@@ -101,18 +97,16 @@
     <favorites_list name="MyIDE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.72136474">
+    <splitter split-orientation="horizontal" split-proportion="0.7701056">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Mycompile/Compile.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="263">
-                  <caret line="805" column="52" lean-forward="true" selection-start-line="805" selection-start-column="52" selection-end-line="805" selection-end-column="52" />
+                <state relative-caret-position="251">
+                  <caret line="149" selection-start-line="149" selection-end-line="149" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="method#var_description_proc#0;class#Compile#0" />
-                    <element signature="method#var_define_proc#0;class#Compile#0" />
                   </folding>
                 </state>
               </provider>
@@ -121,7 +115,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
+                <state relative-caret-position="-29">
                   <caret line="19" selection-start-line="19" selection-end-line="19" />
                 </state>
               </provider>
@@ -165,8 +159,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Table/InfoSym.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+                <state relative-caret-position="109">
+                  <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
                 </state>
               </provider>
             </entry>
@@ -225,7 +219,7 @@
             <entry file="file://$PROJECT_DIR$/src/Mycompile/test.txt">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="187">
-                  <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+                  <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
                 </state>
               </provider>
             </entry>
@@ -322,8 +316,8 @@
         <option value="$PROJECT_DIR$/src/Table/Tab.java" />
         <option value="$PROJECT_DIR$/src/Mycompile/Buffer.java" />
         <option value="$PROJECT_DIR$/src/Lexer/Lexer.java" />
-        <option value="$PROJECT_DIR$/src/Mycompile/test.txt" />
         <option value="$PROJECT_DIR$/src/Mycompile/Compile.java" />
+        <option value="$PROJECT_DIR$/src/Mycompile/test.txt" />
       </list>
     </option>
   </component>
@@ -420,7 +414,7 @@
     <property name="SearchEverywhereHistoryKey" value="plugins&#9;ACTION&#9;WelcomeScreen.Plugins&#10;statist&#9;PSI&#9;JAVA://com.sun.org.glassfish.external.statistics.Statistic&#10;TODO&#9;ACTION&#9;ActivateTODOToolWindow" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545455643739" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545462908502" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -571,7 +565,7 @@
       <workItem from="1545292483328" duration="5432000" />
       <workItem from="1545308805931" duration="19619000" />
       <workItem from="1545404801193" duration="4953000" />
-      <workItem from="1545409855343" duration="9022000" />
+      <workItem from="1545409855343" duration="10660000" />
     </task>
     <task id="LOCAL-00001" summary="feature_完成了向下递归子程序的的整体框架以及符号表，读入缓冲流">
       <created>1544952467259</created>
@@ -591,7 +585,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179187000" />
+    <option name="totallyTimeSpent" value="180825000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -606,22 +600,22 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <layout>
       <window_info anchor="top" id="Database" order="0" side_tool="true" weight="0.32748538" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5371901" visible="true" weight="0.1754856" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.26943943" visible="true" weight="0.1754856" />
       <window_info id="Favorites" order="1" sideWeight="0.46052632" side_tool="true" weight="0.22237107" />
-      <window_info id="Structure" order="2" sideWeight="0.46280992" side_tool="true" visible="true" weight="0.1754856" />
+      <window_info id="Structure" order="2" sideWeight="0.7305606" side_tool="true" visible="true" weight="0.1754856" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
       <window_info id="UI Designer" order="5" />
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.46929824" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.49269006" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3991228" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.19152047" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32748538" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32748538" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.1388889" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.15497077" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.3260234" />
@@ -707,6 +701,22 @@
     <option name="LAST_COMMIT_MESSAGE" value="编写了部分递归调用子程序" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Mycompile/Compile.java</url>
+          <line>1135</line>
+          <properties />
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Mycompile/Compile.java</url>
+          <line>128</line>
+          <properties />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="token_buf.get_buffer_type(0) " />
@@ -819,13 +829,6 @@
     <entry file="file://$PROJECT_DIR$/MyIDE.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Lexer/Token.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -840,13 +843,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/InfoSym.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -901,18 +897,30 @@
     <entry file="file://$PROJECT_DIR$/src/Mycompile/test.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
-          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/Tab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-29">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/InfoSym.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Mycompile/Compile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="805" column="52" lean-forward="true" selection-start-line="805" selection-start-column="52" selection-end-line="805" selection-end-column="52" />
+        <state relative-caret-position="251">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#var_description_proc#0;class#Compile#0" />
-            <element signature="method#var_define_proc#0;class#Compile#0" />
           </folding>
         </state>
       </provider>

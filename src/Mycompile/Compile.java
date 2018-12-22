@@ -110,7 +110,7 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         while (token_buf.get_buffer_value(2).equals(";") || token_buf.get_buffer_value(2).equals(",")){
-            varNum += var_define_proc(numPara);
+            varNum += var_define_proc(numPara + varNum);
             if (token_buf.get_buffer_value(0).equals(";")){
                 token_buf.update_buffer();
             }
@@ -124,7 +124,7 @@ public class Compile{
     }
 
     // ＜变量定义＞  ::= ＜类型标识符＞＜标识符＞{,＜标识符＞}
-    int var_define_proc(int numPara){
+    int var_define_proc(int numBefore){
         //System.out.println("<变量定义>");
         int symKind = SymbolType.VAR;
         int symType = -1;
@@ -157,7 +157,7 @@ public class Compile{
         }
         if (symLine != -1) {
             varNum ++;
-            tab_list.getCurTable().put(symName, new InfoSym(symLine, symKind, symType,4 + numPara + varNum, symValue));
+            tab_list.getCurTable().put(symName, new InfoSym(symLine, symKind, symType,4 + numBefore + varNum, symValue));
         }
         while (token_buf.get_buffer_value(0).equals(",")){
             symLine = -1;
@@ -173,7 +173,7 @@ public class Compile{
             }
             if (symLine != -1){
                 varNum ++;
-                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,4 + numPara + varNum,symValue));
+                tab_list.getCurTable().put(symName,new InfoSym(symLine,symKind,symType,4 + numBefore + varNum,symValue));
             }
         }
         return varNum;
@@ -496,7 +496,6 @@ public class Compile{
         }
         infoSym.symValue = tab_list.addTable(tab_list.getCurTable()) + "";  // func 和 proc 的value存储的是其对应符号表的下标
         int numPara = parameter_table_proc();
-        // TODO - 对于参数可能还会有什么处理 ？？？ 2333
 
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
@@ -1146,12 +1145,15 @@ public class Compile{
         else{
             // TODO - 错误处理 ERROR
         }
-        String symName = "";
+        String symName;
         InfoSym infoSym;
         if (token_buf.get_buffer_type(0) == Tag.ID){
             symName = token_buf.get_buffer_value(0);
             infoSym = tab_list.getCurTable().get(symName);
-            // TODO - 读入操作  特定指令读入 2333 更新 infoSym 并加入且更新符号表、运行栈
+            if (infoSym != null){
+                int layer = tab_list.getCurTable().getSymLayer(symName);
+                _emit("RED",layer + "", infoSym.relatedPos + "");
+            }
             token_buf.update_buffer();
         }
         else {
@@ -1162,7 +1164,10 @@ public class Compile{
             if (token_buf.get_buffer_type(0) == Tag.ID){
                 symName = token_buf.get_buffer_value(0);
                 infoSym = tab_list.getCurTable().get(symName);
-                // TODO - 读入操作  特定指令读入 2333 更新 infoSym 并加入且更新符号表、运行栈
+                if (infoSym != null){
+                    int layer = tab_list.getCurTable().getSymLayer(symName);
+                    _emit("RED",layer + "", infoSym.relatedPos + "");
+                }
                 token_buf.update_buffer();
             }
             else {
@@ -1177,7 +1182,7 @@ public class Compile{
         }
     }
 
-    // ＜写语句＞    ::= printf ‘(’ ＜字符串＞,＜表达式＞ ‘)’| printf ‘(’＜字符串＞ ‘)’|printf ‘(’＜表达式＞‘)’
+    // ＜写语句＞    ::= printf ‘(’ ＜字符串＞,＜表达式＞ ‘)’| printf ‘(’＜字符串＞‘)’|printf ‘(’＜表达式＞‘)’
     void printf_proc(){
         //System.out.println("<写语句>");
         if (token_buf.get_buffer_type(0) == Tag.PRINTFSYM){
@@ -1207,6 +1212,15 @@ public class Compile{
         || token_buf.get_buffer_type(0) == Tag.ID
         || token_buf.get_buffer_type(0) == Tag.CHAR){
             expression_proc(infoSym);
+            if (infoSym.symbolType == Tag.NUM){
+                _emit("WRT","0","0");
+            }
+            else if (infoSym.symbolType == Tag.FLOATNUM){
+                _emit("WRTF","0","0");
+            }
+            else if (infoSym.symbolType == Tag.CHAR){
+                _emit("WRTC","0","0");
+            }
         }
 
         if (token_buf.get_buffer_value(0).equals(")")){
