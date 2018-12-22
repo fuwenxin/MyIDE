@@ -1,41 +1,18 @@
 const int c1=10;
 const char c2='a';
 const float c3=123.456;
-
-int b1;
-char b2;
-float b3;
-
-int mod(int a, int b)
-{
-    b1=a-b;
-    return (b1);
-}
-
-char mod2(int a,int b)
-{
-    b2=a+b;
-    return (b2);
-}
-
-void test(){
-    int a;
-    int b;
-    a = 1;
-    b = 2;
-    printf(a+b);
-}
+int x;
+int z;
 
 void main()
 {
-    int x,y;
-    scanf(x,y);
-    if(b1>b2)
-       printf("123");
-    b3=c1+c2;
-    printf(b3);
-    mod(x,y);
-    mod2(x,y);
-    printf("234");
+    int y;
+    int c;
+    c = 1;
+    while (c < 6){
+        y = c + 1;
+        c = c + 1;
+    }
+    y = c3;
     return;
 }

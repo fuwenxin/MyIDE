@@ -6,13 +6,28 @@ import Table.Tablist;
 import Table.Tag;
 
 import javax.sound.sampled.Line;
+import java.util.Formatter;
+import java.util.Vector;
+
+class Pcode{
+    String p;
+    String x;
+    String y;
+    Pcode(String pp,String xx,String yy){
+        p = pp;
+        x = xx;
+        y = yy;
+    }
+}
 
 public class Compile{
     Buffer token_buf;
     Tablist tab_list;
     int Pc;
+    Vector pcode;
     public Compile(){
         token_buf = new Buffer();
+        pcode = new Vector<Pcode>();
     }
 
     // 递归向下子程序 ---------------------------------------------------------------------------------------------------
@@ -22,7 +37,7 @@ public class Compile{
     void program_entry(){
         //TODO -  write_headsge() 如果有时间写x86可以使用到
         Pc = 0;
-        System.out.println("<程序>");
+        ////System.out.println("<程序>");
         tab_list = new Tablist(new Tab(null,0));
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             const_description_proc();
@@ -57,7 +72,7 @@ public class Compile{
 
     // <常量声明子程序>::=  const＜常量定义＞;{ const＜常量定义＞;}
     void const_description_proc(){
-        System.out.println("<常量声明子程序>");
+        //System.out.println("<常量声明子程序>");
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             token_buf.update_buffer();
         }
@@ -85,7 +100,7 @@ public class Compile{
 
     // <变量声明子程序>::= ＜变量定义＞;{＜变量定义＞;}
     void var_description_proc(int numPara){
-        System.out.println("<变量声明子程序>");
+        //System.out.println("<变量声明子程序>");
         int varNum = 0;
         varNum += var_define_proc(numPara);
         if (token_buf.get_buffer_value(0).equals(";")){
@@ -110,7 +125,7 @@ public class Compile{
 
     // ＜变量定义＞  ::= ＜类型标识符＞＜标识符＞{,＜标识符＞}
     int var_define_proc(int numPara){
-        System.out.println("<变量定义>");
+        //System.out.println("<变量定义>");
         int symKind = SymbolType.VAR;
         int symType = -1;
         int symLine = -1;
@@ -168,7 +183,7 @@ public class Compile{
     //						| float＜标识符＞＝[+|-]＜实数＞{,＜标识符＞＝[+|-]＜实数＞}
     //						| char＜标识符＞＝＜字符＞{,＜标识符＞＝＜字符＞}
     void const_define_proc(){
-        System.out.println("<常量定义>");
+        //System.out.println("<常量定义>");
         int symType ;
         int symKind = SymbolType.CONSTVAR;
         int curLine = -1;
@@ -397,10 +412,13 @@ public class Compile{
 
     // ＜有返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
     void function_call_proc(){
-        System.out.println("<有返回值函数调用语句>");
+        //System.out.println("<有返回值函数调用语句>");
         int funcTable = -1;
+        InfoSym infoSym = null;
+        String symName = "";
         if (token_buf.get_buffer_type(0) == Tag.ID){
-            InfoSym infoSym = tab_list.getCurTable().get(token_buf.get_buffer_value(0));
+            symName = token_buf.get_buffer_value(0);
+            infoSym = tab_list.getCurTable().get(symName);
             funcTable = Integer.parseInt(infoSym.symValue);
             token_buf.update_buffer();
         }
@@ -426,7 +444,10 @@ public class Compile{
         else {
             // TODO - 错误处理 ERROR
         }
-
+        if (infoSym != null){
+            int layer = tab_list.getCurTable().getSymLayer(symName);
+            _emit("CAL",layer + "",infoSym.relatedPos + "");
+        }
         if (funcTable != -1){
             tab_list.shiftBack();
         }
@@ -435,7 +456,7 @@ public class Compile{
 
     // ＜无返回值函数调用语句＞ ::= ＜标识符＞‘(’＜值参数表＞‘)’
     void process_call_proc(){
-        System.out.println("<无返回值函数调用语句>");
+        //System.out.println("<无返回值函数调用语句>");
         if (token_buf.get_buffer_type(0) == Tag.ID){
 
             token_buf.update_buffer();
@@ -463,7 +484,7 @@ public class Compile{
 
     // ＜有返回值函数定义部分＞  ::=  ＜声明头部＞‘(’＜参数表＞‘)’‘{’＜复合语句＞‘}’
     void function_define_proc(){
-        System.out.println("<有返回值函数定义部分>");
+        //System.out.println("<有返回值函数定义部分>");
         StringBuffer symName = new StringBuffer();
         InfoSym infoSym = new InfoSym(-1,SymbolType.FUNC,-1,Pc +1, "");
         statement_head_proc(symName,infoSym);
@@ -506,7 +527,7 @@ public class Compile{
 
     // ＜无返回值函数定义部分＞  ::= void＜标识符＞‘(’＜参数表＞‘)’‘{’＜复合语句＞‘}’
     void process_define_proc(){
-        System.out.println("<无返回值函数定义部分>");
+        //System.out.println("<无返回值函数定义部分>");
         if (token_buf.get_buffer_type(0) == Tag.VOIDSYM){
             token_buf.update_buffer();
         }
@@ -557,7 +578,7 @@ public class Compile{
 
     // <复合语句>  ::=  ［＜常量说明部分＞］［＜变量说明部分＞］＜语句列＞
     void compound_statement_proc(int numPara){
-        System.out.println("<复合语句>");
+        //System.out.println("<复合语句>");
         if (token_buf.get_buffer_type(0) == Tag.CONSTSYM){
             const_description_proc();
         }
@@ -570,7 +591,7 @@ public class Compile{
 
     // <语句列>  ::= ＜语句＞｛＜语句＞｝
     void statement_list_proc(){
-        System.out.println("<语句列>");
+        //System.out.println("<语句列>");
         statement_proc();
         while (token_buf.get_buffer_type(0) == Tag.IFSYM
         || token_buf.get_buffer_type(0) == Tag.WHILESYM
@@ -590,7 +611,7 @@ public class Compile{
     //			｜＜赋值语句＞;｜＜读语句＞;｜＜写语句＞;｜＜空＞
     //			 |＜情况语句＞｜＜返回语句>
     void statement_proc(){
-        System.out.println("<语句>");
+        //System.out.println("<语句>");
         if (token_buf.get_buffer_type(0) == Tag.CASESYM
         || token_buf.get_buffer_value(0).equals("}")
         || token_buf.get_buffer_type(0) == Tag.DEFAULTSYM){
@@ -692,7 +713,7 @@ public class Compile{
 
     // <条件语句> ::=  if ‘(’＜条件＞‘)’＜语句＞[else＜语句＞]
     void if_statement_proc(){
-        System.out.println("<条件语句>");
+        //System.out.println("<条件语句>");
         if (token_buf.get_buffer_type(0) == Tag.IFSYM){
             token_buf.update_buffer();
         }
@@ -706,7 +727,10 @@ public class Compile{
             // TODO - 错误处理
         }
         tab_list.addTable(tab_list.getCurTable());
-        condition_proc();
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
+        condition_proc(infoSym);
+        int loc_back1 = pcode.size();
+        _emit("JPC","0","-1");
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
         }
@@ -714,8 +738,10 @@ public class Compile{
             // TODO - ERROR 错误处理
         }
         statement_proc();
+        ((Pcode)pcode.get(loc_back1)).y = ((Pc+1) + "");
         tab_list.frontable();
-
+        //JPC x,y
+        //有条件跳转 t=t-1 if S(t-1) == 0 ip = y
         if (token_buf.get_buffer_type(0) == Tag.ELSESYM){
             token_buf.update_buffer();
             statement_proc();
@@ -723,13 +749,19 @@ public class Compile{
     }
 
     // ＜条件＞  ::=  ＜表达式＞＜关系运算符＞＜表达式＞｜＜表达式＞ //表达式为0条件为假，否则为真
-    void condition_proc(){
-        System.out.println("<条件>");
-        expression_proc();
+    void condition_proc(InfoSym infoSym){
+        //System.out.println("<条件>");
+        expression_proc(infoSym);
         if (token_buf.get_buffer_type(0) == Tag.RELA){
+            String opt = token_buf.get_buffer_value(0);
             token_buf.update_buffer();
-
-            expression_proc();
+            expression_proc(infoSym);
+            if (infoSym.symbolType == Tag.FLOATNUM){
+                _oprf(opt);
+            }
+            else{
+                _opr(opt);
+            }
         }
         // TODO - 处理条件判断及结果
         return;
@@ -737,7 +769,8 @@ public class Compile{
 
     // ＜循环语句＞   ::=  while ‘(’＜条件＞‘)’＜语句＞
     void loop_statemnet_proc(){
-        System.out.println("<循环语句>");
+        //System.out.println("<循环语句>");
+        int startPos = Pc + 1;
         if (token_buf.get_buffer_type(0) == Tag.WHILESYM){
             token_buf.update_buffer();
         }
@@ -750,8 +783,10 @@ public class Compile{
         else{
             // TODO - 错误处理
         }
-        // TODO - 条件处理。。。
-        condition_proc();
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
+        condition_proc(infoSym);
+        int backPos = pcode.size();
+        _emit("JPC","0","-1");
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
         }
@@ -759,14 +794,18 @@ public class Compile{
             // TODO - 错误处理
         }
         statement_proc();
+        _emit("JMP","0",startPos + "");
+        ((Pcode)pcode.get(backPos)).y = ((Pc + 1) + "");
     }
 
     // ＜赋值语句＞   ::=  ＜标识符＞＝＜表达式＞
     void assign_statemnet_proc(){
-        System.out.println("<赋值语句>");
+        //System.out.println("<赋值语句>");
         String symName = "";
+        InfoSym infoSym = null;
         if (token_buf.get_buffer_type(0) == Tag.ID){
             symName = token_buf.get_buffer_value(0);
+            infoSym = tab_list.getCurTable().get(symName);
             token_buf.update_buffer();
         }
         else{
@@ -778,13 +817,20 @@ public class Compile{
         else {
             // TODO - 错误处理 ERROR
         }
-        // TODO - 赋值的相关处理
-        expression_proc();
+        InfoSym infoSym1 = new InfoSym(-1,-1,-1,-1,"0");
+        expression_proc(infoSym1);
+        if (infoSym != null){
+            int layer = tab_list.getCurTable().getSymLayer(symName);
+            if (infoSym1.symbolType == Tag.FLOATNUM
+                    && (infoSym.symbolType == Tag.CHAR || infoSym.symbolType == Tag.NUM))
+                _emit("FIT","0","0");
+            _emit("STO",layer + "",infoSym.relatedPos + "");
+        }
     }
 
     // ＜声明头部＞   ::=  int＜标识符＞ |float ＜标识符＞|char＜标识符＞
     void statement_head_proc(StringBuffer symName, InfoSym infoSym){
-        System.out.println("<声明头部>");
+        //System.out.println("<声明头部>");
         infoSym.lineNum = token_buf.get_token_position(0);
         if (token_buf.get_buffer_type(0) == Tag.INTSYM){
             infoSym.symbolType = Tag.NUM;
@@ -813,7 +859,7 @@ public class Compile{
 
     // ＜参数表＞    ::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
     int parameter_table_proc(){
-        System.out.println("<参数表>");
+        //System.out.println("<参数表>");
         int symKind = SymbolType.PARA;
         int symType = -1;
         int symLine = -1;
@@ -887,10 +933,9 @@ public class Compile{
     }
 
     // ＜表达式＞    ::= ［＋｜－］＜项＞{＜加法运算符＞＜项＞}
-    void expression_proc(){
-        System.out.println("<表达式>");
+    void expression_proc(InfoSym infoSym){
+        //System.out.println("<表达式>");
         boolean isNegative = false;
-        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
         if (token_buf.get_buffer_value(0).equals("+")){
             token_buf.update_buffer();
         }
@@ -902,7 +947,6 @@ public class Compile{
         // TODO - 类型转换~~
 
         while (token_buf.get_buffer_value(0).equals("+") || token_buf.get_buffer_value(0).equals("-")){
-            // infoSym = new InfoSym(token_buf.get_token_position(0),-1,-1,"0");
             String opt = token_buf.get_buffer_value(0);
             token_buf.update_buffer();
             item_proc(infoSym);
@@ -917,7 +961,7 @@ public class Compile{
 
     // ＜项＞  ::= ＜因子＞{＜乘法运算符＞＜因子＞}
     void item_proc(InfoSym infoSym){
-        System.out.println("<项>");
+        //System.out.println("<项>");
         factor_proc(infoSym);
         // TODO 可能要对乘法有些处理
         while (token_buf.get_buffer_value(0).equals("*") || token_buf.get_buffer_value(0).equals("/")){
@@ -935,19 +979,23 @@ public class Compile{
 
     // ＜因子＞    ::= ＜标识符＞｜‘(’＜表达式＞‘)’｜＜整数＞｜＜有返回值函数调用语句＞|＜实数＞|＜字符＞
     void factor_proc(InfoSym sym){
-        System.out.println("<因子>");
-        if (token_buf.get_buffer_type(0) == Tag.ID){
+        //System.out.println("<因子>");
+        if (token_buf.get_buffer_type(0) == Tag.ID && !token_buf.get_buffer_value(1).equals("(")){
             String symName = token_buf.get_buffer_value(0);
             InfoSym infoSym = tab_list.getCurTable().get(symName);
             if (infoSym != null) {
-                sym.symbolType = _lod_type(sym.symbolType, infoSym.symbolType ,
+                if (infoSym.symbolKind == SymbolType.VAR || infoSym.symbolKind == SymbolType.PARA)
+                    sym.symbolType = _lod_type(sym.symbolType, infoSym.symbolType ,
                         tab_list.getCurTable().getSymLayer(symName) + "",infoSym.relatedPos + "");
+                else if (infoSym.symbolKind == SymbolType.CONSTVAR){
+                    sym.symbolType = _lit_type(sym.symbolType, infoSym.symbolType,infoSym.symValue);
+                }
             }
             token_buf.update_buffer();
         }
         else if (token_buf.get_buffer_value(0).equals("(")){
             token_buf.update_buffer();
-            expression_proc();
+            expression_proc(sym);
             if (token_buf.get_buffer_value(0).equals(")")){
                 token_buf.update_buffer();
             }
@@ -986,7 +1034,8 @@ public class Compile{
         else{
             // TODO - 错误处理
         }
-        expression_proc();
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
+        expression_proc(infoSym);
         if (token_buf.get_buffer_value(0).equals(")")){
             token_buf.update_buffer();
         }
@@ -1069,20 +1118,22 @@ public class Compile{
 
     // ＜值参数表＞ ::= ＜表达式＞{,＜表达式＞}｜＜空＞
     void value_parameter_table_proc(){
-        System.out.println("<值参数表>");
+        //System.out.println("<值参数表>");
         if (token_buf.get_buffer_value(0).equals(")")){ // <空>
             return;
         }
-        expression_proc();
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
+        expression_proc(infoSym);
         while (token_buf.get_buffer_value(0).equals(",")){
             token_buf.update_buffer();
-            expression_proc();
+            infoSym = new InfoSym(-1,-1,-1,-1,"0");
+            expression_proc(infoSym);
         }
     }
 
     // ＜读语句＞    ::=  scanf ‘(’＜标识符＞{,＜标识符＞}‘)’
     void scanf_proc(){
-        System.out.println("<读语句>");
+        //System.out.println("<读语句>");
         if (token_buf.get_buffer_type(0) == Tag.SCANFSYM){
             token_buf.update_buffer();
         }
@@ -1128,7 +1179,7 @@ public class Compile{
 
     // ＜写语句＞    ::= printf ‘(’ ＜字符串＞,＜表达式＞ ‘)’| printf ‘(’＜字符串＞ ‘)’|printf ‘(’＜表达式＞‘)’
     void printf_proc(){
-        System.out.println("<写语句>");
+        //System.out.println("<写语句>");
         if (token_buf.get_buffer_type(0) == Tag.PRINTFSYM){
             token_buf.update_buffer();
         }
@@ -1141,13 +1192,13 @@ public class Compile{
         else{
             // TODO - 错误处理 ERROR
         }
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
         if (token_buf.get_buffer_type(0) == Tag.STRI){
             // TODO - 输出字符串
             token_buf.update_buffer();
             if (token_buf.get_buffer_value(0).equals(",")){
                 token_buf.update_buffer();
-
-                expression_proc();
+                expression_proc(infoSym);
             }
         }
         else if (token_buf.get_buffer_value(0).equals("+")
@@ -1155,7 +1206,7 @@ public class Compile{
         || token_buf.get_buffer_value(0).equals("(")
         || token_buf.get_buffer_type(0) == Tag.ID
         || token_buf.get_buffer_type(0) == Tag.CHAR){
-            expression_proc();
+            expression_proc(infoSym);
         }
 
         if (token_buf.get_buffer_value(0).equals(")")){
@@ -1168,7 +1219,8 @@ public class Compile{
 
     // ＜返回语句＞   ::=  return[‘(’＜表达式＞‘)’]
     void return_proc(){
-        System.out.println("<返回语句>");
+        //System.out.println("<返回语句>");
+        InfoSym infoSym = new InfoSym(-1,-1,-1,-1,"0");
         if (token_buf.get_buffer_type(0) == Tag.RETURNSYM){
             token_buf.update_buffer();
         }
@@ -1178,7 +1230,7 @@ public class Compile{
         if (token_buf.get_buffer_value(0).equals("(")){
             token_buf.update_buffer();
 
-            expression_proc();
+            expression_proc(infoSym);
 
             if (token_buf.get_buffer_value(0).equals(")")){
                 token_buf.update_buffer();
@@ -1187,15 +1239,15 @@ public class Compile{
                 // TODO - 错误处理 ERROR
             }
         }
-        else{
-            // TODO - 函数返回处理
-            return;
-        }
+        if (infoSym.symbolType == Tag.FLOATNUM)
+            _oprf("RE");
+        else
+            _opr("RE");
     }
 
     // ＜主函数＞    ::= void main‘(’‘)’‘{’＜复合语句＞‘}’
     void main_function_proc(){
-        System.out.println("<主函数>");
+        //System.out.println("<主函数>");
         if (token_buf.get_buffer_type(0) == Tag.VOIDSYM || token_buf.get_buffer_type(0) == Tag.INTSYM){
             token_buf.update_buffer();
         }
@@ -1288,13 +1340,13 @@ public class Compile{
             _emit("LOD",layer,pos);
         }
         else if ((leftType == Tag.CHAR || leftType == Tag.NUM) && (rightType == Tag.FLOATNUM)){
-            _emit("FTI","0","0");
+            _emit("FTI","0","1");
             _emit("LOD",layer,pos);
             leftType = rightType;
         }
         else if (leftType == Tag.FLOATNUM && (rightType == Tag.CHAR || rightType == Tag.NUM)){
             _emit("LOD",layer,pos);
-            _emit("FTI","","");
+            _emit("FTI","0","1");
         }
         else {
             _emit("LOD",layer,pos);
@@ -1305,15 +1357,16 @@ public class Compile{
     int _lit_type(int leftType,int rightType,String value){
         if (leftType == -1){
             _emit("LIT","0",value);
+            leftType = rightType;
         }
         else if ((leftType == Tag.CHAR || leftType == Tag.NUM) && (rightType == Tag.FLOATNUM)){
-            _emit("FTI","0","0");
+            _emit("FTI","0","1");
             _emit("LIT","0",value);
             leftType = rightType;
         }
         else if (leftType == Tag.FLOATNUM && (rightType == Tag.CHAR || rightType == Tag.NUM)){
             _emit("LIT","0",value);
-            _emit("FTI","","");
+            _emit("FTI","0","1");
         }
         else {
             _emit("LIT","0",value);
@@ -1363,13 +1416,21 @@ public class Compile{
 
     void _emit(String str,String x,String y){
         Pc ++;
-        System.out.println(str + "\t" + x + "\t" + y);
+        pcode.add(new Pcode(str,x,y));
     }
 
+    void _printOut(){
+        int num = 0;
+        for (Object o:pcode){
+            Pcode p = (Pcode)o;
+            System.out.printf("%3d%6s%10s%10s\n",++num,p.p,p.x,p.y);
+        }
+    }
 
     //-----------------------------------------------------------------------------------------------------------------
     public static void main(String []args){   // Test ------------------------
         Compile compile = new Compile();
         compile.program_entry();
+        compile._printOut();
     }
 }
